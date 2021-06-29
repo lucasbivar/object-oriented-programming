@@ -9,7 +9,7 @@ OOP is a programming paradigm which means that is a set of rules and ideas and c
   - Encapsulation: it's not mandatory knows the object's internal implementation to use;
 
 ### Class
-Classes are an expanded concept of data structures: like data structures, they can contain data members, but they can also contain functions as members(class attributes)
+Classes are an expanded concept of data structures: like data structures, they can contain data members, but they can also contain functions as members.
 
 
 ```cpp
