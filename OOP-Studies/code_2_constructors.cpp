@@ -12,12 +12,18 @@ public:
       Name = "No name";
       Company = "No company";
       Age = 0;
+      std::cout << "Object is being created!" << std::endl;
   };
 
   Employee(string name, string company, unsigned short int age){
     Name = name;
     Company = company;
     Age = age;
+    std::cout << "Object is being created!" << std::endl;
+  };
+
+  ~Employee(){
+    std::cout << "Object is being deleted!" << std::endl;
   };
 
   void IntroduceYourself(){
@@ -30,12 +36,13 @@ public:
 
 
 int main(){
-  Employee employee1, employee2, employee3, employee4;
+  
 
-  employee1 = Employee("Lucas Bivar", "Google", 18);
-  employee2 = Employee("Vinicius Celestino", "Spotify", 19);
-  employee3 = Employee("Joao Victor", "Facebook", 18);
-
+  Employee employee1 = Employee("Lucas Bivar", "Google", 18);
+  Employee employee2 = Employee("Vinicius Celestino", "Spotify", 19);
+  Employee employee3 = Employee("Joao Victor", "Facebook", 18);
+  Employee employee4;
+  
   employee1.IntroduceYourself();
   employee2.IntroduceYourself();
   employee3.IntroduceYourself();
