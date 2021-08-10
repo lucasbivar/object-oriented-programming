@@ -8,8 +8,14 @@ using std::string;
 using std::cout;
 using std::endl;
 
-Agenda::Agenda(){
+Agenda::Agenda(int tPessoas){
+  tamanhoAgenda = tPessoas <= 0 ? 1 : tPessoas;
+  pessoas = new Pessoa[tamanhoAgenda];
   qtdePessoas = 0;
+}
+
+Agenda::~Agenda(){
+  delete [] pessoas;
 }
 
 void Agenda::armazenaPessoa(string nome, int idade, float altura){
@@ -17,7 +23,7 @@ void Agenda::armazenaPessoa(string nome, int idade, float altura){
 }
 
 void Agenda::armazenaPessoa(const Pessoa &p){
-  if (qtdePessoas < 10){
+  if (qtdePessoas < tamanhoAgenda){
     pessoas[qtdePessoas++] = p;
   }else{
     cout << "Agenda Lotada!" << endl;

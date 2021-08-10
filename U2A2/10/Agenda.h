@@ -8,20 +8,19 @@ using std::string;
 
 class Agenda{
 public:
-   Agenda();
+   Agenda(int tPessoas = 1);
+   ~Agenda();
    void armazenaPessoa(string nome, int idade, float altura);
    void armazenaPessoa(const Pessoa &p);
 
    void removePessoa(string nome);
 
-   // Retorna -1 se não encontrar
-   int buscaPessoa(string nome) const;
-
+   int buscaPessoa(string nome) const; 
    void imprimePovo() const; 
-   void imprimePessoa(int i) const;
+   void imprimePessoa(int i) const; 
 private:
-   Pessoa pessoas[10];
-   int qtdePessoas;
+   Pessoa *pessoas;
+   int qtdePessoas, tamanhoAgenda;
 };
 
 #endif
