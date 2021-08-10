@@ -1,7 +1,7 @@
-#include "Person.h"
+#include "Pessoa.h"
 
 int main(){
-  Person p1("Mark Zuckernerg", 37, 1.71), p2("Sundar Pichai", 49, 1.80), 
+  Pessoa p1("Mark Zuckernerg", 37, 1.71), p2("Sundar Pichai", 49, 1.80), 
   p3("Jeff Bezos", 57, 1.71);
 
   p1.showPerson();

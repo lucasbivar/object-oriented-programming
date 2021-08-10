@@ -1,12 +1,12 @@
-#ifndef PERSON_H
-#define PERSON_H
+#ifndef PESSOA_H
+#define PESSOA_H
 
 #include <string>
 using std::string;
 
-class Person{
+class Pessoa{
 public:
-  Person(string, int, double);
+  Pessoa(string, int, double);
 
   string getName() const;
   void setName(string);

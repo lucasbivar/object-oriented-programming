@@ -1,4 +1,4 @@
-#include "Person.h"
+#include "Pessoa.h"
 
 #include <string>
 using std::string;
@@ -7,37 +7,37 @@ using std::string;
 using std::cout;
 using std::endl;
 
-Person::Person(string name, int age, double height){
+Pessoa::Pessoa(string name, int age, double height){
   setName(name);
   setAge(age);
   setHeight(height);
 }
 
-string Person::getName() const {
+string Pessoa::getName() const {
   return name;
 }
 
-void Person::setName(string name){
+void Pessoa::setName(string name){
   this->name = name;
 }
 
-int Person::getAge() const{
+int Pessoa::getAge() const{
   return age;
 }
 
-void Person::setAge(int age){
+void Pessoa::setAge(int age){
   this->age = age;
 }
 
-double Person::getHeight() const{
+double Pessoa::getHeight() const{
   return height;
 }
 
-void Person::setHeight(double height){
+void Pessoa::setHeight(double height){
   this->height = height;
 }
 
-void Person::showPerson() const{
+void Pessoa::showPerson() const{
   cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;
   cout << "Name: " << getName() << endl;
   cout << "Age: " << getAge() << endl;
