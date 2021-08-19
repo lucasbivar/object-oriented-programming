@@ -26,3 +26,5 @@ int main () {
 	
  	return 0;
 }
+
+// g++ -Wall -std=c++17  U2A2/9/*.cpp -o main && ./main
