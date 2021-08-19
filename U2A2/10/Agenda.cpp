@@ -57,7 +57,7 @@ void Agenda::imprimePovo() const {
 }
 
 void Agenda::imprimePessoa(int i) const {
-  if(i > 0 && i < 11){
+  if(i > 0 && i <= qtdePessoas){
     pessoas[i-1].showPerson();
   }
 }
