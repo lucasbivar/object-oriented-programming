@@ -10,22 +10,22 @@ Complex::Complex(double real, double imaginary){
   this->imaginary = imaginary;
 }
 
-const Complex& Complex::operator+(const Complex& otherNumber) const {
+const Complex Complex::operator+(const Complex& otherNumber) const {
   double newRealPart = this->real + otherNumber.real;
   double newImaginaryPart = this->imaginary + otherNumber.imaginary;
 
-  Complex *newCplx = new Complex(newRealPart, newImaginaryPart);
+  Complex newCplx = Complex(newRealPart, newImaginaryPart);
 
-  return *newCplx;
+  return newCplx;
 }
 
-const Complex& Complex::operator-(const Complex& otherNumber) const {
+const Complex Complex::operator-(const Complex& otherNumber) const {
   double newRealPart = this->real - otherNumber.real;
   double newImaginaryPart = this->imaginary - otherNumber.imaginary;
 
-  Complex *newCplx = new Complex(newRealPart, newImaginaryPart);
+  Complex newCplx = Complex(newRealPart, newImaginaryPart);
 
-  return *newCplx;
+  return newCplx;
 }
 
 const Complex& Complex::operator+=(const Complex& other){
