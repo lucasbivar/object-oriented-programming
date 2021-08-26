@@ -32,7 +32,7 @@ public:
   int &operator[](int); //permite modificar o elemento
   int operator[](int) const; //não permite modificar o elemento
 
-  Array& operator+(const Array &otherArray) const;
+  Array operator+(const Array &otherArray) const;
 
   const Array& operator+=(const Array &otherArray);
   

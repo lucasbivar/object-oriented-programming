@@ -106,20 +106,20 @@ int Array::operator[](int i) const
   return arr[i];
 }
 
-Array& Array::operator+(const Array &otherArray) const {
+Array Array::operator+(const Array &otherArray) const {
   int newArraySize = this->getSize() + otherArray.getSize();
 
-  Array *newArray = new Array(newArraySize);
+  Array newArray = Array(newArraySize);
 
   for(int i = 0; i < this->getSize(); i++){
-    (*newArray)[i] = (*this)[i];
+    newArray[i] = (*this)[i];
   }
 
   for(int i = this->getSize(); i < newArraySize; i++){
-    (*newArray)[i] = otherArray[i-this->getSize()];
+    newArray[i] = otherArray[i-this->getSize()];
   }
 
-  return *newArray;
+  return newArray;
 }
 
 const Array& Array::operator+=(const Array &otherArray){
