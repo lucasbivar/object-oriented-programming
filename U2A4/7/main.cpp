@@ -22,7 +22,7 @@ int main(){
   cout << "Valor da taxa adicional: " << iNovo.getAdditionalFee() << endl;
   cout << "------------------------" << endl << endl;
 
-  cout << "Imovel Novo" << endl;
+  cout << "Imovel Velho" << endl;
   cout << "Endereço: " << iVelho.getAddress() << endl;
   cout << "Preço final (Com desconto aplicado): " << iVelho.getPrice() << endl;
   cout << "Valor do desconto: " << iVelho.getDiscount() << endl;
