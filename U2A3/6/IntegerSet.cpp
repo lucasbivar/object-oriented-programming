@@ -34,28 +34,28 @@ void IntegerSet::operator>>(int number){
   }
 }
 
-IntegerSet& IntegerSet::operator|(const IntegerSet &otherSet) const {
-  IntegerSet *newSet = new IntegerSet();
+IntegerSet IntegerSet::operator|(const IntegerSet &otherSet) const {
+  IntegerSet newSet = IntegerSet();
 
   for(int i = 0; i < 100; i++){
     if(this->set[i] || otherSet.set[i]){
-      newSet->set[i] = true;
+      newSet.set[i] = true;
     }
   }
 
-  return *newSet;
+  return newSet;
 }
 
-IntegerSet& IntegerSet::operator&(const IntegerSet &otherSet) const{
-  IntegerSet *newSet = new IntegerSet();
+IntegerSet IntegerSet::operator&(const IntegerSet &otherSet) const{
+  IntegerSet newSet = IntegerSet();
 
   for(int i = 0; i < 100; i++){
     if(this->set[i] && otherSet.set[i]){
-      newSet->set[i] = true;
+      newSet.set[i] = true;
     }
   }
 
-  return *newSet;
+  return newSet;
 }
 
 

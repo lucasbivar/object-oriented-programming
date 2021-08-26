@@ -13,8 +13,8 @@ public:
   void operator<<(int);
   void operator>>(int);
 
-  IntegerSet& operator|(const IntegerSet &) const;
-  IntegerSet& operator&(const IntegerSet &) const;
+  IntegerSet operator|(const IntegerSet &) const;
+  IntegerSet operator&(const IntegerSet &) const;
 
 private:
   bool set[100];
