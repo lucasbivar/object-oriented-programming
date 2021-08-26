@@ -9,6 +9,9 @@ int main(){
 
   cout << employee << endl;
 
+  Funcionario employee2("Joao Gomes", 45645665445, 12342, 220, 150, 4900);
+
+  cout << employee2 << endl;
   return 0;
 }
 
