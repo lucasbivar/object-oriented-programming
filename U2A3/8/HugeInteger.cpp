@@ -45,30 +45,30 @@ ostream& operator<<(ostream& out, const HugeInteger& number){
   return out;
 }
 
-const HugeInteger& HugeInteger::operator+(const HugeInteger& other) const {
+const HugeInteger HugeInteger::operator+(const HugeInteger& other) const {
   int greaterSize = this->size > other.size ? this->size : other.size;
   int currentSum, carry = 0;
 
-  HugeInteger *newHugeInteger = new HugeInteger();
-  newHugeInteger->size = greaterSize;
+  HugeInteger newHugeInteger = HugeInteger();
+  newHugeInteger.size = greaterSize;
  
   for(int i = 0; i < greaterSize; i++){
     currentSum = (this->number[i]-'0') + (other.number[i]-'0') + carry;
 
     if(currentSum > 9){
-      newHugeInteger->number[i] = '0' + (currentSum % 10);
+      newHugeInteger.number[i] = '0' + (currentSum % 10);
       currentSum /= 10;
       carry = currentSum;
     }else{
-      newHugeInteger->number[i] = '0' + currentSum;
+      newHugeInteger.number[i] = '0' + currentSum;
       carry = 0;
     }
   }
   if(carry != 0){
-    newHugeInteger->number[newHugeInteger->size++] = '0' + carry;
+    newHugeInteger.number[newHugeInteger.size++] = '0' + carry;
   }
 
-  return (*newHugeInteger);
+  return newHugeInteger;
 }
 
 const HugeInteger& HugeInteger::operator+=(const HugeInteger& other){

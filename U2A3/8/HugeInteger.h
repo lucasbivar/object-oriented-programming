@@ -14,7 +14,7 @@ public:
 
   const HugeInteger& operator=(const string&);
 
-  const HugeInteger& operator+(const HugeInteger&) const;
+  const HugeInteger operator+(const HugeInteger&) const;
   const HugeInteger& operator+=(const HugeInteger&);
 
   bool operator==(const HugeInteger&) const;
