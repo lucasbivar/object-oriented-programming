@@ -24,19 +24,19 @@ void Empresa::addEmployee(const Funcionario& employee){
 }
 
 void Empresa::showClients() const {
-  cout << endl << "-----------------------ALL CLIENTS----------------------" << endl;
+  cout << endl << "-----------------------TODOS CLIENTES----------------------" << endl;
   for(unsigned int i = 0; i < quantityOfClients; i++){
     cout << clients[i] << endl;
   }
-  cout << "--------------------------------------------------------" << endl << endl;
+  cout << "-----------------------------------------------------------" << endl << endl;
 }
 
 void Empresa::showEmployees() const {
-  cout << endl << "-----------------------ALL EMPLOYEES----------------------" << endl;
+  cout << endl << "-----------------------TODOS FUNCIONARIOS----------------------" << endl;
   for(unsigned int i = 0; i < quantityOfEmployees; i++){
     cout << employees[i] << endl;
   }
-  cout << "----------------------------------------------------------" << endl << endl;
+  cout << "---------------------------------------------------------------" << endl << endl;
 }
 
 double Empresa::calculatePaymentSheet() const {
