@@ -9,6 +9,10 @@ int main(){
 
   cout << client << endl;
 
+  Cliente client2("Tarcisio Oliveira", 12345678912, "Rua Pedro Carneiro", 988880101);
+
+  cout << client2 << endl;
+
   return 0;
 }
 

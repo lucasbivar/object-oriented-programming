@@ -9,7 +9,7 @@ using std::endl;
 int main(){
   Imovel i("Rua João Cabral de Melo", 860000);
   ImovelNovo iNovo("Rua Cicero Galdino Pessoa Celestino", 920000, 650);
-  ImovelVelho iVelho("Rua Onde Judas Bateu as Botas", 320000, 900);
+  ImovelVelho iVelho("Rua Ciclano da Silva", 320000, 900);
 
   cout << "Imovel" << endl;
   cout << "Endereço: " << i.getAddress() << endl;
