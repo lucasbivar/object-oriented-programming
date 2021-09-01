@@ -16,7 +16,7 @@ PessoaFisica::PessoaFisica(string nome, string endereco, string email,
 }
     
 void PessoaFisica::exibirPessoa() const {
-  cout << "----------------------------------------" << endl;
+  cout << "-----------------------------------------" << endl;
   cout << "Nome               - " << nome << endl;
   cout << "Endereco           - " << endereco << endl;
   cout << "Email              - " << email << endl;
@@ -24,7 +24,11 @@ void PessoaFisica::exibirPessoa() const {
   cout << "CPF                - " << cpf  << endl;
   cout << "Data de Nascimento - " << dataDeNascimento << endl;
   cout << "Estado Civil       - " << estadoCivil << endl;
-  cout << "----------------------------------------" << endl;
+  cout << "-----------------------------------------" << endl;
+}
+
+string PessoaFisica::getNome() const {
+  return nome;
 }
 
 string PessoaFisica::getCpfOrCnpj() const {

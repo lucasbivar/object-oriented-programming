@@ -9,7 +9,3 @@ Pessoa::Pessoa(string nome, string endereco, string email, unsigned int telefone
   this->email = email;
   this->telefone = telefone;
 }
-
-string Pessoa::getNome() const {
-  return nome;
-}

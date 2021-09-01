@@ -6,9 +6,9 @@ using std::string;
 
 class Pessoa{
 public:
-  Pessoa(string="", string="", string="", unsigned int=NULL);
+  Pessoa(string="", string="", string="", unsigned int=999999999);
 
-  string getNome() const;
+  virtual string getNome() const = 0;
   
   virtual string getCpfOrCnpj() const = 0;
 

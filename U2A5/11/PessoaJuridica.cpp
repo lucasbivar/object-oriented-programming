@@ -17,7 +17,7 @@ PessoaJuridica::PessoaJuridica(string nome, string endereco, string email,
 }
     
 void PessoaJuridica::exibirPessoa() const {
-  cout << "----------------------------------------" << endl;
+  cout << "-----------------------------------------" << endl;
   cout << "Nome               - " << nome << endl;
   cout << "Endereco           - " << endereco << endl;
   cout << "Email              - " << email << endl;
@@ -25,7 +25,12 @@ void PessoaJuridica::exibirPessoa() const {
   cout << "CNPJ               - " << cnpj  << endl;
   cout << "Inscrição Estadual - " << inscricaoEstadual << endl;
   cout << "Razão Social       - " << razaoSocial << endl;
-  cout << "----------------------------------------" << endl;
+  cout << "-----------------------------------------" << endl;
+}
+
+
+string PessoaJuridica::getNome() const {
+  return nome;
 }
 
 string PessoaJuridica::getCpfOrCnpj() const {
