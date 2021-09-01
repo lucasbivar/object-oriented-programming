@@ -11,6 +11,8 @@ public:
   Agenda(int=10);
   ~Agenda();
 
+  void listarContatos() const;
+
   void buscarContato(const string) const;
 
   bool removerContato(const string);

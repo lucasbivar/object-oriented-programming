@@ -2,6 +2,9 @@
 
 #include "Pessoa.h"
 
+#include <iostream>
+using std::cout;
+using std::endl;
 
 Agenda::Agenda(int tamanho){
   this->quantidadeDeContatos = 0;
@@ -15,6 +18,17 @@ Agenda::~Agenda(){
   }
   delete [] agenda;
 }
+
+void Agenda::listarContatos() const {
+  cout << endl;
+  cout << "=-=-=-=-=-=-=-=AGENDA-=-=-=-=-=-=-=-=-=-=" << endl;
+  for(int i = 0; i < quantidadeDeContatos; i++){
+    agenda[i]->exibirPessoa();
+  }
+  cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;
+  cout << endl;
+}
+
 
 void Agenda::buscarContato(const string termoDeBusca) const {
   for(int i = 0; i < quantidadeDeContatos; i++){
