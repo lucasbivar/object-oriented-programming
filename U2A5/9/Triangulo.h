@@ -24,11 +24,11 @@ public:
   }
 
   virtual double calcularArea(){
-    return (base*altura)/2.;
+    return (sqrt(3.)/4.)*pow(base, 2);
   }
 
   virtual double calcularPerimetro(){
-    return base + 2*(sqrt(pow(altura, 2.) + pow(base/2., 2)));
+    return 3*base;
   }
 private:
   double base, altura;
