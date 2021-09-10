@@ -62,6 +62,8 @@ int main(){
           Tool tool(entry_aux, name_aux, quantity_aux, price_aux);
           inventory.createTool(tool);
 
+          cout << "Ferramenta criada com sucesso!" << endl;
+          
           break;
         }
       } 
@@ -97,6 +99,7 @@ int main(){
           cout << "Tente outro registro, ou -1 para cancelar operacao." << endl;
           cout << "Numero do Registro: ";
         }else{
+          cout << "Ferramenta atualizada com sucesso!" << endl;
           break;
         }
       }
