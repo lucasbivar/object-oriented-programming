@@ -1,8 +1,6 @@
 #ifndef TOOL_H
 #define TOOL_H
 
-#include <string>
-using std::string;
 
 #include <iostream>
 using std::ostream;

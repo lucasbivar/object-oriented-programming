@@ -127,14 +127,11 @@ bool Inventory::createTool(Tool& tool) {
     || (strcmp(tool.getName(), "") == 0)) return false;
 
   Tool *tmp = (Tool*) malloc(sizeof(Tool));
-  // not working
-  // Tool tmp; 
 
   this->dataBase.clear();
   
   this->dataBase.seekg((tool.getEntry()-1)*sizeof(Tool));
   this->dataBase.read(reinterpret_cast<char*>(tmp), sizeof(Tool));
-  // this->dataBase.read(reinterpret_cast<char*>(&tmp), sizeof(Tool));
 
   if((strcmp(tmp->getName(), "") != 0)) return false;
 

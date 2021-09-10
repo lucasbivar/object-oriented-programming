@@ -13,8 +13,6 @@ using std::endl;
 #include <iomanip>
 using std::setw;
 
-#include <string>
-using std::string;
 
 void menu();
 void printLine();
