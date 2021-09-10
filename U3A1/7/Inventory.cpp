@@ -12,8 +12,10 @@ using std::left;
 #include <iomanip>
 using std::setw;
 
+#include <string.h>
+
 Tool initializer[8] = {
-    Tool(3, "Lixadeira", 7, 57.98),
+    {3, "Lixadeira", 7, 57.98},
     {17, "Martelo", 76, 11.99},
     {24, "Serra tico-tico", 21, 11.00},
     {39, "Cortador de grama", 3, 79.50},
@@ -106,7 +108,7 @@ void Inventory::listAllTools() {
 
     if(this->dataBase.eof()) break;
 
-    if(tmp->getName() == "") continue;
+    if(strcmp(tmp->getName(), "") == 0) continue;
 
     isEmpty = false;
 
@@ -122,7 +124,7 @@ void Inventory::listAllTools() {
 
 bool Inventory::createTool(Tool& tool) {
   if(tool.getEntry() > this->dataBaseEntries || tool.getEntry() <= 0 
-    || tool.getName() == "") return false;
+    || (strcmp(tool.getName(), "") == 0)) return false;
 
   Tool *tmp = (Tool*) malloc(sizeof(Tool));
   // not working
@@ -134,7 +136,7 @@ bool Inventory::createTool(Tool& tool) {
   this->dataBase.read(reinterpret_cast<char*>(tmp), sizeof(Tool));
   // this->dataBase.read(reinterpret_cast<char*>(&tmp), sizeof(Tool));
 
-  if(tmp->getName() != "") return false;
+  if((strcmp(tmp->getName(), "") != 0)) return false;
 
   this->dataBase.seekp((tool.getEntry()-1)*sizeof(Tool));
   this->dataBase.write(reinterpret_cast<char*>(&tool), sizeof(Tool));
@@ -155,7 +157,7 @@ bool Inventory::showTool(int entry) {
   this->dataBase.seekg((entry-1)*sizeof(Tool));
   this->dataBase.read(reinterpret_cast<char *>(tmp), sizeof(Tool));
 
-  if(tmp->getName() != ""){
+  if((strcmp(tmp->getName(), "") != 0)){
     cout << endl << "FERRAMENTA:" << endl;
 
     cout << setw(5) << "ENTRY" << " | " << setw(25) << "NAME" << " | "
@@ -188,7 +190,7 @@ bool Inventory::isValidEntry(int entry){
   this->dataBase.seekg((entry-1)*sizeof(Tool));
   this->dataBase.read(reinterpret_cast<char *>(tmp), sizeof(Tool));
     
-  if(tmp->getName() != ""){
+  if((strcmp(tmp->getName(), "") != 0)){
 
     free(tmp);
 
@@ -210,7 +212,7 @@ bool Inventory::hasEntry(int entry) {
   this->dataBase.seekg((entry-1)*sizeof(Tool));
   this->dataBase.read(reinterpret_cast<char *>(tmp), sizeof(Tool));
     
-  if(tmp->getName() != ""){
+  if((strcmp(tmp->getName(), "") != 0)){
 
     free(tmp);
 
@@ -232,7 +234,7 @@ bool Inventory::deleteTool(int entry){
   this->dataBase.seekg((entry-1)*sizeof(Tool));
   this->dataBase.read(reinterpret_cast<char *>(tmp), sizeof(Tool));
 
-  if(tmp->getQuantity() == 0 && tmp->getName() != ""){
+  if(tmp->getQuantity() == 0 && (strcmp(tmp->getName(), "") != 0)){
     tmp->setName("");
     tmp->setPrice(0);
 
@@ -253,7 +255,7 @@ bool Inventory::deleteTool(int entry){
 
 bool Inventory::updateTool(Tool& tool){
   if(tool.getEntry() > this->dataBaseEntries || tool.getEntry() <= 0 
-    || tool.getName() == "") return false;
+    || (strcmp(tool.getName(), "") == 0)) return false;
 
   this->dataBase.clear();
 

@@ -1,7 +1,6 @@
 #include "Tool.hpp"  
 
-#include <string>
-using std::string;
+#include <string.h>
 
 #include <iostream>
 using std::endl;
@@ -13,7 +12,7 @@ using std::defaultfloat;
 #include <iomanip>
 using std::setw;
 
-Tool::Tool(int entry, string name, int quantity, double price){
+Tool::Tool(int entry, const char* name, int quantity, double price){
 	this->setEntry(entry);
   this->setName(name);
   this->setQuantity(quantity);
@@ -28,12 +27,12 @@ void Tool::setEntry(int entry){
   this->entry = entry;
 }
 
-string Tool::getName() const {
+const char* Tool::getName() const {
   return name;
 }
 
-void Tool::setName(string name){
-  this->name = name;
+void Tool::setName(const char* name){
+  strcpy(this->name, name);
 }
 
 int Tool::getQuantity() const {

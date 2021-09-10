@@ -10,13 +10,13 @@ using std::ostream;
 class Tool {
   friend ostream& operator<<(ostream&, const Tool&);
 public:
-	Tool(int=0, string="", int=0, double=0);
+	Tool(int=0, const char* ="", int=0, double=0);
 
 	int getEntry() const;
   void setEntry(int);
 
-  string getName() const;
-  void setName(string);
+  const char* getName() const;
+  void setName(const char*);
 
   int getQuantity() const;
   void setQuantity(int);
@@ -26,7 +26,7 @@ public:
 
 private:
 	int entry;
-  string name;
+  char name[70];
   int quantity;
   double price;
 };

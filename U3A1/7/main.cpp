@@ -24,7 +24,7 @@ int main(){
 
   int op = 0;
   int entry_aux;
-  string name_aux;
+  char name_aux[70];
   double price_aux;
   int quantity_aux;
 
@@ -52,8 +52,8 @@ int main(){
         }else{
           cout << "Nome da ferramenta: ";
           cin.ignore();
-          getline(cin, name_aux);
-
+          cin.getline(name_aux, sizeof(name_aux));
+          
           cout << "Quantidade: ";
           cin >> quantity_aux;
 
@@ -82,7 +82,7 @@ int main(){
         }
         cout << "Nome da ferramenta: ";
         cin.ignore();
-        getline(cin, name_aux);
+        cin.getline(name_aux, sizeof(name_aux));
 
         cout << "Quantidade: ";
         cin >> quantity_aux;
