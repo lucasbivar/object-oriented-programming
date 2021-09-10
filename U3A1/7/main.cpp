@@ -42,7 +42,8 @@ int main(){
       cout << "Digite o numero do registro (-1 cancela operacao): ";
       while (true){
         cin >> entry_aux;
-        if(!inventory.isValidEntry(entry_aux) && entry_aux != -1){
+        if(entry_aux == -1) break;
+        if(!inventory.isValidEntry(entry_aux)){
           cout << endl;
           cout << "Registro nao disponivel!!" << endl; 
           cout << "Tente outro registro, ou -1 para cancelar operacao." << endl;
@@ -105,7 +106,8 @@ int main(){
       cout << "Digite o numero do registro (-1 cancela operacao): ";
       while (true){
         cin >> entry_aux;
-        if(!inventory.deleteTool(entry_aux) && entry_aux != -1){
+        if(entry_aux == -1) break;
+        if(!inventory.deleteTool(entry_aux)){
           cout << endl;
           cout << "Registro nao encontrador ou ainda tem estoque!!" << endl; 
           cout << "Tente outro registro, ou -1 para cancelar operacao." << endl;
@@ -121,7 +123,8 @@ int main(){
       cout << "Digite o numero do registro (-1 cancela operacao): ";
       while (true){
         cin >> entry_aux;
-        if(!inventory.showTool(entry_aux) && entry_aux != -1){
+        if(entry_aux == -1) break;
+        if(!inventory.showTool(entry_aux)){
           cout << endl;
           cout << "Registro nao encontrado!!" << endl; 
           cout << "Tente outro registro, ou -1 para cancelar operacao." << endl;
