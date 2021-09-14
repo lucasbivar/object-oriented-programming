@@ -8,7 +8,7 @@ using std::endl;
 using std::string;
 
 int main(){
-  Queue<int> q1(5);
+  Queue<int, 5> q1;
   int aux;
   
   cout << "ta vazia? " << (q1.isEmpty() ? "true" : "false") << endl;
