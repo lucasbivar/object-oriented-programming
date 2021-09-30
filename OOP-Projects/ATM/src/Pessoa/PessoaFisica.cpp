@@ -28,6 +28,7 @@ const char* PessoaFisica::getCPF() const {
 }
 
 void PessoaFisica::setCPF(const char* CPF) {
+  //TODO: VALIDAR CPF
   strcpy(this->CPF, CPF);
 }
 
@@ -44,6 +45,7 @@ const char* PessoaFisica::getEstadoCivil() const {
 }
 
 void PessoaFisica::setEstadoCivil(const char* estadoCivil) {
+  //TODO: VALIDAR ESTADO CIVIL (3 TIPOS)
   strcpy(this->estadoCivil, estadoCivil);
 }
 
