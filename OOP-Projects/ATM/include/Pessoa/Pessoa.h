@@ -13,21 +13,21 @@ public:
     this->setEmail(nome);
   };
 
-  virtual const char* getNome() const {
+  const char* getNome() const {
     return nome;
   };
 
-  virtual void setNome(const char* nome){
+  void setNome(const char* nome){
     strcpy(this->nome, nome);
   }
 
-  virtual const char* getEmail() const {
+  const char* getEmail() const {
     return email;
   }
 
-  virtual void setEmail(const char* email){
+  void setEmail(const char* email){
     // TODO: VALIDAR EMAIL
-    strcpy(this->nome, nome);
+    strcpy(this->email, email);
   }
 
   virtual void exibirPessoa() const = 0;
