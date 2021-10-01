@@ -6,7 +6,7 @@ using std::string;
 
 #include "../Transacao/Transacao.h"
 
-#include "Pessoa.h"
+#include "../Pessoa/Pessoa.h"
 
 #include "../Excecoes/ValorInvalido.h"
 #include "../Excecoes/SaldoInsuficiente.h"
@@ -17,8 +17,6 @@ using std::list;
 #include <string>
 using std::string;
 using std::to_string;
-
-#include <string.h>
 
 #include <time.h>
 
@@ -59,21 +57,14 @@ public:
     valor *= -1;
     this->saldo += valor;
 
-    char descricao[50];
-    strcpy(descricao, "Transferencia para ");
-    strcat(descricao, ptrConta->numeroDaConta);
-
-    Transacao transacaoEnviado(valor, descricao, this->numeroDaConta);
+    Transacao transacaoEnviado(valor, "TRANSFERENCIA", this->numeroDaConta);
     this->listaDeTransacoes.push_back(transacaoEnviado);
 
 
     valor *= -1;
     ptrConta->saldo += valor;
 
-    strcpy(descricao, "Recebendo transferencia de ");
-    strcat(descricao, this->numeroDaConta);
-
-    Transacao transacaoRecebido(valor, descricao, ptrConta->numeroDaConta);
+    Transacao transacaoRecebido(valor, "TRANSFERENCIA", ptrConta->numeroDaConta);
     ptrConta->listaDeTransacoes.push_back(transacaoRecebido);
 
   }
@@ -112,7 +103,7 @@ protected:
   double saldo;
   list<Transacao> listaDeTransacoes;
 
-  virtual bool validarRetirada(double valor) const {
+  virtual void validarRetirada(double valor) const {
     if(valor <= 0){
       throw ValorInvalido();
     }else if(valor > this->saldo){
