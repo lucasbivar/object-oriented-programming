@@ -1,0 +1,21 @@
+Tipo de dado:
+P -> Pessoa
+C -> Conta
+T -> Transacao
+
+Tipo de Conta:
+CC  -> Conta Corrente
+CCL -> Conta Corrente Com Limite
+CP  -> Conta Poupança
+
+Tipo de Pessoa
+PF -> Pessoa Fisica
+PJ -> Pessoa Juridica
+
+Exemplos:
+P; PJ; dado;pessoa;juridica; 
+P; PF; dado;pessoa;fisica;
+
+CC; nome__da__pessoa; dado;conta;corrente;
+
+T; dados;da;transacao;
