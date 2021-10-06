@@ -42,13 +42,11 @@ int main(){
   cout << "Op.: ";
   while(true){
     cin >> opVisao;
-    if(opVisao == 3){ // lembrar de apagar
-      exit(0);
-    }
-    if(opVisao >= 1 && opVisao <= 2) break;
+    if(opVisao >= 1 && opVisao <= 3) break;
     cout << "Opção Inválida. Tente novamente!" << endl;
     cout << "Op.: ";
   }
+  if(opVisao == 3) break;
   system("clear");
   if(opVisao == 1){
     while (true){
