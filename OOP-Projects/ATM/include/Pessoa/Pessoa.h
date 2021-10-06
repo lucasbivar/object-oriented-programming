@@ -10,7 +10,7 @@ class Pessoa {
 public:
   Pessoa(const char* nome, const char* email){
     this->setNome(nome);
-    this->setEmail(nome);
+    this->setEmail(email);
   };
 
   const char* getNome() const {
