@@ -1,14 +1,15 @@
 #include "../../include/Pessoa/PessoaJuridica.h"
 
-#include <string.h>
+#include <string>
+using std::string;
 
 #include <iostream>
 using std::cout;
 using std::endl;
 
 
-PessoaJuridica::PessoaJuridica(const char* nome, const char* email, 
-  const char* cnpj, const char* inscricaoEstadual, const char* razaoSocial)
+PessoaJuridica::PessoaJuridica(string nome, string email, 
+  string cnpj, string inscricaoEstadual, string razaoSocial)
   : Pessoa(nome, email){
     this->setCNPJ(cnpj);
     this->setInscricaoEstadual(inscricaoEstadual);
@@ -25,26 +26,26 @@ void PessoaJuridica::exibirPessoa() const {
   cout << "-----------------------------------------" << endl;
 }
 
-const char* PessoaJuridica::getCNPJ() const {
+string PessoaJuridica::getCNPJ() const {
   return CNPJ;
 }
 
-void PessoaJuridica::setCNPJ(const char* CNPJ) {
-  strcpy(this->CNPJ, CNPJ);
+void PessoaJuridica::setCNPJ(string CNPJ) {
+  this->CNPJ = CNPJ;
 }
 
-const char* PessoaJuridica::getInscricaoEstadual() const {
+string PessoaJuridica::getInscricaoEstadual() const {
   return inscricaoEstadual;
 }
 
-void PessoaJuridica::setInscricaoEstadual(const char* inscricaoEstadual) {
-  strcpy(this->inscricaoEstadual, inscricaoEstadual);
+void PessoaJuridica::setInscricaoEstadual(string inscricaoEstadual) {
+  this->inscricaoEstadual = inscricaoEstadual;
 }
 
-const char* PessoaJuridica::getRazaoSocial() const {
+string PessoaJuridica::getRazaoSocial() const {
   return razaoSocial;
 }
 
-void PessoaJuridica::setRazaoSocial(const char* razaoSocial) {
-  strcpy(this->razaoSocial, razaoSocial);
+void PessoaJuridica::setRazaoSocial(string razaoSocial) {
+  this->razaoSocial = razaoSocial;
 }

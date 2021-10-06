@@ -13,8 +13,13 @@ using std::ios_base;
 #include <iomanip>
 using std::setw;
 
-ContaCorrenteLimite::ContaCorrenteLimite(Pessoa *p,string prefixoConta, string prefixoPessoa, double limite): 
-Conta(p, prefixoConta, prefixoPessoa){
+#include <string>
+using std::string;
+
+ContaCorrenteLimite::ContaCorrenteLimite(Pessoa *p, string prefixoConta, string prefixoPessoa, 
+                                          double limite, double saldo, string numeroDaConta, 
+                                          list<Transacao> transacoes): 
+Conta(p, prefixoConta, prefixoPessoa, saldo, numeroDaConta, transacoes){
   this->limite = limite >= 0 ? limite : 200;
 }
 
@@ -49,8 +54,8 @@ void ContaCorrenteLimite::imprimirExtrato() const {
 
       cout << it->getData() << "  |  " << setw(13) << it->getDescricao() << " |  ";
       
-      cout << (((strcmp(it->getDescricao(), "DEPOSITO") == 0) || ((strcmp(it->getDescricao(), 
-      "TRANSFERENCIA") == 0) && it->getValorDaTransacao() > 0 )) ? "+": "")  << it->getValorDaTransacao() << endl; 
+      cout << ((it->getDescricao() == "DEPOSITO" || (it->getDescricao() == 
+      "TRANSFERENCIA" && it->getValorDaTransacao() > 0 )) ? "+": "")  << it->getValorDaTransacao() << endl; 
       c++;
     }
   }else{
@@ -84,4 +89,9 @@ void ContaCorrenteLimite::setLimite(double valor){
     throw ValorInvalido();
   }
   this->limite = valor;
+}
+
+
+double ContaCorrenteLimite::getLimite() const {
+  return limite;
 }

@@ -4,37 +4,40 @@
 #include <iostream>
 using std::ostream;
 
-#include <string.h>
+#include <string>
+using std::string;
 
 class Pessoa {
 public:
-  Pessoa(const char* nome, const char* email){
+  Pessoa(string nome, string email){
     this->setNome(nome);
     this->setEmail(email);
   };
 
-  const char* getNome() const {
+  virtual ~Pessoa()=default;
+
+  string getNome() const {
     return nome;
   };
 
-  void setNome(const char* nome){
-    strcpy(this->nome, nome);
+  void setNome(string nome){
+    this->nome = nome;
   }
 
-  const char* getEmail() const {
+  string getEmail() const {
     return email;
   }
 
-  void setEmail(const char* email){
+  void setEmail(string email){
     // TODO: VALIDAR EMAIL
-    strcpy(this->email, email);
+    this->email = email;
   }
 
   virtual void exibirPessoa() const = 0;
   
 protected:
-  char nome[100];
-  char email[100];
+  string nome;
+  string email;
 };
 
 #endif 

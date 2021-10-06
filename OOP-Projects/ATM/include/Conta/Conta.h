@@ -28,11 +28,19 @@ using std::to_string;
 class Conta {
 public:
 
-  Conta(Pessoa* p, string prefixoConta, string prefixoPessoa){
+  Conta(Pessoa* p=nullptr, string prefixoConta="", string prefixoPessoa="", double saldo = 0, string numeroDaConta="", list<Transacao> transacoes=list<Transacao>()){
     this->pessoa = p;
-    this->saldo = 0;
-    this->gerarNumeroConta(prefixoConta, prefixoPessoa);
-  }
+    this->saldo = saldo;
+    this->listaDeTransacoes = transacoes;
+    if(numeroDaConta == ""){
+      this->gerarNumeroConta(prefixoConta, prefixoPessoa);
+    }else{
+      this->numeroDaConta = numeroDaConta;
+    }
+  } 
+
+  virtual ~Conta()=default;
+
 
   void operator<<(double valor){
     if(valor <= 0){
@@ -78,7 +86,7 @@ public:
   virtual void mostrarConta() const = 0;
 
 
-  const char* getNumeroDaConta() const {
+  string getNumeroDaConta() const {
     return numeroDaConta;
   }
 
@@ -104,12 +112,12 @@ private:
 
 
     string novoNumeroConta = prefixoConta+prefixoPessoa+ano+dia+mes+segundo+hora+minuto;
-    strcpy(this->numeroDaConta, novoNumeroConta.c_str());
+    this->numeroDaConta = novoNumeroConta;
   }
 
 protected:
   Pessoa* pessoa;
-  char numeroDaConta[20];
+  string numeroDaConta;
   double saldo;
   list<Transacao> listaDeTransacoes;
 

@@ -10,8 +10,9 @@ using std::ios_base;
 #include <iomanip>
 using std::setw;
 
-ContaPoupanca::ContaPoupanca(Pessoa* p, string prefixoConta, string prefixoPessoa, int diaDeAniversario): 
-Conta(p, prefixoConta, prefixoPessoa){
+ContaPoupanca::ContaPoupanca(Pessoa* p, string prefixoConta, string prefixoPessoa, int diaDeAniversario, 
+                            double saldo, string numeroDaConta, list<Transacao> transacoes): 
+Conta(p, prefixoConta, prefixoPessoa, saldo, numeroDaConta, transacoes){
   this->diaDeAniversario = diaDeAniversario > 0 && diaDeAniversario <= 31 ? diaDeAniversario : 10;
 }
  
@@ -35,7 +36,7 @@ void ContaPoupanca::imprimirExtrato() const {
       if(c > 30) break;
       cout << it->getData() << "  |  " << setw(13) << it->getDescricao() << " |  ";
 
-      cout << (((strcmp(it->getDescricao(), "DEPOSITO") == 0) || ((strcmp(it->getDescricao(), "TRANSFERENCIA") == 0)
+      cout << ((it->getDescricao() == "DEPOSITO" || (it->getDescricao() == "TRANSFERENCIA"
        && it->getValorDaTransacao() > 0 )) ? "+": "")  << it->getValorDaTransacao() << endl; 
 
       c++;
@@ -71,4 +72,8 @@ void ContaPoupanca::mostrarConta() const {
 void ContaPoupanca::setDiaDeAniversario(int dia){
   // validar genericamente e criar exceção
   this->diaDeAniversario = dia;
+}
+
+int ContaPoupanca::getDiaDeAniversario() const {
+  return diaDeAniversario;
 }

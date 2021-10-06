@@ -10,12 +10,16 @@ using std::string;
 
 class ContaPoupanca : public Conta {
 public:
-  ContaPoupanca(Pessoa* p, string prefixoConta, string prefixoPessoa, int=10);
+  ContaPoupanca(Pessoa* p=nullptr, string prefixoConta="", string prefixoPessoa="", 
+                int dataDeAniversario=10 , double saldo=0, 
+                string numeroDaConta="", list<Transacao> transacoes=list<Transacao>());
+
 
   virtual void imprimirExtrato() const;
   virtual void mostrarConta() const;
   
   void setDiaDeAniversario(int dia);
+  int getDiaDeAniversario() const;
 private:
   int diaDeAniversario; 
 };

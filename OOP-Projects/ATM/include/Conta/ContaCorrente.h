@@ -10,7 +10,9 @@ using std::string;
 
 class ContaCorrente : public Conta {
 public:
-  ContaCorrente(Pessoa* p, string prefixoConta, string prefixoPessoa);
+  ContaCorrente(Pessoa* p=nullptr, string prefixoConta="", string prefixoPessoa="", double saldo=0, 
+                string numeroDaConta="", list<Transacao> transacoes=list<Transacao>());
+
 
   virtual void imprimirExtrato() const;
 

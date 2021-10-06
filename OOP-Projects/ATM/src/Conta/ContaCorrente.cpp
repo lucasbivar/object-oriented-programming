@@ -10,11 +10,15 @@ using std::ios_base;
 #include <list>
 using std::list;
 
+#include <string>
+using std::string;
+
 #include <iomanip>
 using std::setw;
 
-ContaCorrente::ContaCorrente(Pessoa* p, string prefixoConta, string prefixoPessoa): 
-Conta(p, prefixoConta, prefixoPessoa){
+ContaCorrente::ContaCorrente(Pessoa* p, string prefixoConta, string prefixoPessoa, double saldo, 
+                            string numeroDaConta, list<Transacao> transacoes): 
+              Conta(p, prefixoConta, prefixoPessoa, saldo, numeroDaConta, transacoes){
 
 }
  
@@ -36,7 +40,7 @@ void ContaCorrente::imprimirExtrato() const {
       if(c > 30) break;
       cout << it->getData() << "  |  " << setw(13) << it->getDescricao() << " |  ";
       
-      cout << (((strcmp(it->getDescricao(), "DEPOSITO") == 0) || ((strcmp(it->getDescricao(), "TRANSFERENCIA") == 0)
+      cout << ((it->getDescricao() == "DEPOSITO" || (it->getDescricao() == "TRANSFERENCIA"
        && it->getValorDaTransacao() > 0 )) ? "+": "")  << it->getValorDaTransacao() << endl; 
       c++;
     }

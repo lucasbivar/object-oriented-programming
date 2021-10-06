@@ -1,20 +1,23 @@
 #ifndef TRANSACAO_H
 #define TRANSACAO_H
 
+#include <string>
+using std::string;
+
 class Transacao {
 public:
-  Transacao(double=0, const char* ="", const char* ="");
+  Transacao(double=0, string ="", string ="", string ="");
 
-  const char* getData() const;
+  string getData() const;
   double getValorDaTransacao() const;
-  const char* getDescricao() const;
-  const char* getTransacoes() const;
+  string getDescricao() const;
+  string getTransacoes() const;
 
 private:
-  char data[15]; //DD-MM-AAAA
+  string data; //DD-MM-AAAA
   double valorDaTransacao;
-  char descricao[50];
-  char conta[15];
+  string descricao;
+  string conta;
 };
 
 #endif

@@ -3,26 +3,30 @@
 
 #include "Pessoa.h"
 
+#include <string>
+using std::string;
+
 class PessoaJuridica: public Pessoa {
 public:
-  PessoaJuridica(const char* ="", const char* ="", const char* ="", 
-    const char* ="", const char* ="");
+  PessoaJuridica(string ="", string ="", string ="", 
+    string ="", string ="");
+  
 
-  const char* getCNPJ() const;
-  void setCNPJ(const char*);
+  string getCNPJ() const;
+  void setCNPJ(string);
 
-  const char* getInscricaoEstadual() const;
-  void setInscricaoEstadual(const char*);
+  string getInscricaoEstadual() const;
+  void setInscricaoEstadual(string);
 
-  const char* getRazaoSocial() const;
-  void setRazaoSocial(const char*);
+  string getRazaoSocial() const;
+  void setRazaoSocial(string);
 
   virtual void exibirPessoa() const;
 
 private:
-  char CNPJ[14];
-  char inscricaoEstadual[9];
-  char razaoSocial[100];
+  string CNPJ;
+  string inscricaoEstadual;
+  string razaoSocial;
 };
 
 #endif 

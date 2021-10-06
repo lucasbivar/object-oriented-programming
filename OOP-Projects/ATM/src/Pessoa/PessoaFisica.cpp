@@ -1,16 +1,17 @@
 #include "../../include/Pessoa/PessoaFisica.h"
 
-#include <string.h>
+#include <string>
+using std::string;
 
 #include <iostream>
 using std::cout;
 using std::endl;
 
-PessoaFisica::PessoaFisica(const char* nome, const char* email, const char* cpf, const char* dataDeNascimento, const char* estadoCivil)
+PessoaFisica::PessoaFisica(string nome, string email, string cpf, string dataDeNascimento, string estadoCivil)
   : Pessoa(nome, email){
-    strcpy(this->CPF, cpf);
-    strcpy(this->dataDeNascimento, dataDeNascimento);
-    strcpy(this->estadoCivil, estadoCivil);
+    this->CPF = cpf;
+    this->dataDeNascimento = dataDeNascimento;
+    this->estadoCivil = estadoCivil;
 }
     
 void PessoaFisica::exibirPessoa() const {
@@ -23,30 +24,30 @@ void PessoaFisica::exibirPessoa() const {
   cout << "-----------------------------------------" << endl;
 }
 
-const char* PessoaFisica::getCPF() const {
+string PessoaFisica::getCPF() const {
   return CPF;
 }
 
-void PessoaFisica::setCPF(const char* CPF) {
+void PessoaFisica::setCPF(string CPF) {
   //TODO: VALIDAR CPF
-  strcpy(this->CPF, CPF);
+  this->CPF = CPF;
 }
 
-const char* PessoaFisica::getDataDeNascimento() const {
+string PessoaFisica::getDataDeNascimento() const {
   return dataDeNascimento;
 }
 
-void PessoaFisica::setDataDeNascimento(const char* dataDeNascimento) {
-  strcpy(this->dataDeNascimento, dataDeNascimento);
+void PessoaFisica::setDataDeNascimento(string dataDeNascimento) {
+  this->dataDeNascimento = dataDeNascimento;
 }
 
-const char* PessoaFisica::getEstadoCivil() const {
+string PessoaFisica::getEstadoCivil() const {
   return estadoCivil;
 }
 
-void PessoaFisica::setEstadoCivil(const char* estadoCivil) {
+void PessoaFisica::setEstadoCivil(string estadoCivil) {
   //TODO: VALIDAR ESTADO CIVIL (3 TIPOS)
-  strcpy(this->estadoCivil, estadoCivil);
+  this->estadoCivil = estadoCivil;
 }
 
 

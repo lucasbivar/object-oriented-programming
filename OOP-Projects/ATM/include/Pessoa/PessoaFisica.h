@@ -5,23 +5,23 @@
 
 class PessoaFisica: public Pessoa {
 public:
-  PessoaFisica(const char* ="", const char* ="", const char* ="",
-   const char* ="", const char* ="");
-    
-  const char* getCPF() const;
-  void setCPF(const char* cpf);
+  PessoaFisica(string ="", string ="", string ="",
+   string ="", string ="");
 
-  const char* getDataDeNascimento() const;
-  void setDataDeNascimento(const char*);
+  string getCPF() const;
+  void setCPF(string cpf);
 
-  const char* getEstadoCivil() const;
-  void setEstadoCivil(const char*);
+  string getDataDeNascimento() const;
+  void setDataDeNascimento(string);
+
+  string getEstadoCivil() const;
+  void setEstadoCivil(string);
 
   virtual void exibirPessoa() const;
 private:
-  char CPF[11];
-  char dataDeNascimento[8];
-  char estadoCivil[20];
+  string CPF;
+  string dataDeNascimento;
+  string estadoCivil;
 };
 
 
