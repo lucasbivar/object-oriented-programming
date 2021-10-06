@@ -7,7 +7,7 @@ using std::runtime_error;
 
 class SaldoInsuficiente : public runtime_error {
 public:
-  SaldoInsuficiente(const char* e="Saldo insuficiente para realizar a retirada!") : runtime_error(e){}
+  SaldoInsuficiente(const char* e="Saldo insuficiente para realizar a retirada!\n") : runtime_error(e){}
 };
 
 
