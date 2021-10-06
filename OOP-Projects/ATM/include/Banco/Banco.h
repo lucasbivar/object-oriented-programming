@@ -9,24 +9,30 @@
 #include <list>
 using std::list;
 
+#include <string>
+using std::string;
+
 class Banco: public PessoaJuridica {
 public:
-  Banco(const char* ="", const char* ="", const char* ="", 
-    const char* ="", const char* ="");
+  Banco(string ="", string ="", string ="", 
+    string ="", string ="");
   ~Banco();
     
-  void listarContasCorrentista(const char* ="") const;
+  void listarContasCorrentista(string ="") const;
   void listarContas() const;
   
-  void editarConta(const char* ="");
+  void editarConta(string ="");
   void cadastrarConta();
-  void removerConta(const char* ="");
-  void consultarConta(const char* ="") const;
+  void removerConta(string ="");
+  void consultarConta(string ="") const;
 
-  Conta* existeConta(const char* ="") const;
+  Conta* existeConta(string ="") const;
 private:
   list<Pessoa*> correntistas;
   list<Conta*> contas;
+  Pessoa* getPonteiroPessoa(string="");
 };
+
+
 
 #endif 

@@ -11,6 +11,8 @@
 #include "../../include/Conta/ContaCorrenteLimite.h"
 #include "../../include/Conta/ContaPoupanca.h"
 
+#include "../../include/Transacao/Transacao.h"
+
 #include <iostream>
 using std::cout;
 using std::cin;
@@ -18,28 +20,154 @@ using std::endl;
 
 #include <string>
 using std::string;
+using std::to_string;
 
-#include <string.h>
+#include <fstream>
+using std::fstream;
+using std::ofstream;
 
-Banco::Banco(const char* nome, const char* email, 
-  const char* cnpj, const char* inscricaoEstadual, const char* razaoSocial):PessoaJuridica(nome, email, cnpj, inscricaoEstadual, razaoSocial){
+using std::ios;
 
+
+#include <list>
+using std::list;
+
+#include <vector>
+using std::vector;
+
+#include <unordered_map>
+using std::unordered_map;
+
+#include <sstream>
+using std::stringstream;
+
+Banco::Banco(string nome, string email, 
+  string cnpj, string inscricaoEstadual, string razaoSocial):
+  PessoaJuridica(nome, email, cnpj, inscricaoEstadual, razaoSocial){
+
+  fstream dataBase;
+  dataBase.open("database/dataBase.txt", ios::in);
+  if(!dataBase){
+    dataBase.close();
+    dataBase.open("database/dataBase.txt", ios::out);
+    dataBase.close();
+  }else{
+    string line;
+    list<string> lines;
+    while(!dataBase.eof()){
+      getline(dataBase, line);
+      lines.push_back(line);
+    }
+
+    dataBase.close();
+    unordered_map<string, list<Transacao>> transacoesContas;
+    
+    for(string line: lines){
+      stringstream ss(line);
+      vector<string> currentData;
+
+      while(ss.good()){
+        string substr;
+        getline(ss, substr, ';');
+        currentData.push_back(substr);
+      }
+
+      if(currentData[0] == "PF"){
+        PessoaFisica* novaPF = new PessoaFisica(currentData[1], currentData[2], currentData[3], currentData[4], currentData[5]);
+        correntistas.push_back(novaPF);
+      }else if(currentData[0] == "PJ"){
+        PessoaJuridica* novaPJ = new PessoaJuridica(currentData[1], currentData[2], currentData[3], currentData[4], currentData[5]);
+        correntistas.push_back(novaPJ);
+      } else if(currentData[0] == "C"){
+        if(currentData[1][0] == '1'){
+
+          Pessoa* pContaAtual = getPonteiroPessoa(currentData[2]);
+
+          ContaCorrente* novaCC = new ContaCorrente(pContaAtual, to_string(currentData[1][0]), to_string(currentData[1][1]),
+          stod(currentData[3]), currentData[1], transacoesContas[currentData[1]]);
+
+          contas.push_back(novaCC);
+
+        }else if(currentData[1][0] == '2'){
+
+          Pessoa* pContaAtual = getPonteiroPessoa(currentData[2]);
+
+          ContaCorrenteLimite* novaCCL = new ContaCorrenteLimite(pContaAtual, to_string(currentData[1][0]), to_string(currentData[1][1]),
+          stod(currentData[4]), stod(currentData[3]), currentData[1], transacoesContas[currentData[1]]);
+
+          contas.push_back(novaCCL);
+
+        }else if(currentData[1][0] == '3'){
+          Pessoa* pContaAtual = getPonteiroPessoa(currentData[2]);
+
+          ContaPoupanca* novaCP = new ContaPoupanca(pContaAtual, to_string(currentData[1][0]), to_string(currentData[1][1]),
+          stoi(currentData[4]), stod(currentData[3]), currentData[1], transacoesContas[currentData[1]]);
+
+          contas.push_back(novaCP);
+        }
+      } else if(currentData[0] == "T"){
+
+        Transacao novaTransacao = Transacao(stod(currentData[2]), currentData[3], currentData[1], currentData[4]);
+        transacoesContas[currentData[1]].push_back(novaTransacao);
+      }
+    }
+
+  }
 }
 
 Banco::~Banco(){
-  for(Conta* c: contas){
-    delete c;
+  ofstream dataBase;
+  dataBase.open("database/dataBase.txt");
+  for(Pessoa* p: correntistas){
+    string line;
+    PessoaFisica* pessoaF = dynamic_cast<PessoaFisica*>(p);
+    if(pessoaF){
+      line = "PF;"+pessoaF->getNome()+";"+pessoaF->getEmail()+";"+pessoaF->getCPF()+";"+pessoaF->getDataDeNascimento()+";"+pessoaF->getEstadoCivil();
+      dataBase << line << endl;
+    }else{
+      PessoaJuridica* pessoaJ = dynamic_cast<PessoaJuridica*>(p);
+      line = "PJ;"+pessoaJ->getNome()+";"+pessoaJ->getEmail()+";"+pessoaJ->getCNPJ()+";"+pessoaJ->getInscricaoEstadual()+";"+pessoaJ->getRazaoSocial();
+      dataBase << line << endl;
+    }
   }
+
+  for(Conta* c: contas){
+    string line;
+    for(Transacao t: c->listaDeTransacoes){
+      line = "T;"+c->getNumeroDaConta()+";"+to_string(t.getValorDaTransacao())+";"+t.getDescricao()+";"+t.getData();
+      dataBase << line << endl;
+      line = "";
+    }
+
+    ContaCorrenteLimite* contaCL = dynamic_cast<ContaCorrenteLimite*>(c);
+    ContaPoupanca* contaP = dynamic_cast<ContaPoupanca*>(c);
+    line = "C;"+c->getNumeroDaConta()+";"+c->pessoa->getNome()+";"+to_string(c->saldo)+";";
+    if(contaCL){
+      line += to_string(contaCL->getLimite());
+    }else if(contaP){
+      line += to_string(contaP->getDiaDeAniversario());
+    }
+    dataBase << line << endl;
+    line = "";
+  }
+
+  dataBase.close();
+
   for(Pessoa* p: correntistas){
     delete p;
   }
+
+  for(Conta* c: contas){
+    delete c;
+  }
+
 }
 
 
-void Banco::removerConta(const char* numeroDaConta){
+void Banco::removerConta(string numeroDaConta){
   bool encontrou = false;
   for(list<Conta*>::iterator it = contas.begin(); it != contas.end(); it++){
-    if(strcmp((*it)->getNumeroDaConta() , numeroDaConta) == 0){
+    if((*it)->getNumeroDaConta() == numeroDaConta){
       contas.erase(it);
       encontrou = true;
       break;
@@ -51,11 +179,11 @@ void Banco::removerConta(const char* numeroDaConta){
   }
 }
 
-void Banco::consultarConta(const char* numeroDaConta) const{
+void Banco::consultarConta(string numeroDaConta) const{
   bool encontrou = false;
 
   for(auto c: contas){
-    if(strcmp(c->getNumeroDaConta(), numeroDaConta) == 0){
+    if(c->getNumeroDaConta() == numeroDaConta){
       c->imprimirExtrato();
       encontrou = true;
       break;
@@ -108,19 +236,19 @@ void Banco::cadastrarConta() {
     cin >> strAux2;
 
     if(opPessoa == 1){
-      novaPessoaFisica = new PessoaFisica(strAux1.c_str(), strAux2.c_str());
+      novaPessoaFisica = new PessoaFisica(strAux1, strAux2);
     }else{
-      novaPessoaJuridica = new PessoaJuridica(strAux1.c_str(), strAux2.c_str());
+      novaPessoaJuridica = new PessoaJuridica(strAux1, strAux2);
     }
 
     if(opPessoa == 1){
       cout << "CPF (sem pontuação): ";
       cin >> strAux1;
-      novaPessoaFisica->setCPF(strAux1.c_str());
+      novaPessoaFisica->setCPF(strAux1);
 
       cout << "Data de Nascimento (sem pontuação - ddmmyyyy): ";
       cin >> strAux1;
-      novaPessoaFisica->setDataDeNascimento(strAux1.c_str());
+      novaPessoaFisica->setDataDeNascimento(strAux1);
     
       string estadoCivil[5] = {"Solteiro", "Casado", "Separado", "Divorciado", "Viúvo"};
       cout << "Estado Civil: " << endl;;
@@ -134,22 +262,22 @@ void Banco::cadastrarConta() {
         cout << "Opção Inválida. Tente novamente!" << endl;
         cout << "Op.: ";
       }
-      novaPessoaFisica->setEstadoCivil(estadoCivil[opAux-1].c_str());
+      novaPessoaFisica->setEstadoCivil(estadoCivil[opAux-1]);
 
       correntistas.push_back(novaPessoaFisica);
     }else{
       cout << "CNPJ (sem pontuação): ";
       cin.ignore();
       getline(cin, strAux1);
-      novaPessoaJuridica->setCNPJ(strAux1.c_str());
+      novaPessoaJuridica->setCNPJ(strAux1);
 
       cout << "Inscrição Estadual: ";
       getline(cin, strAux1);
-      novaPessoaJuridica->setInscricaoEstadual(strAux1.c_str());
+      novaPessoaJuridica->setInscricaoEstadual(strAux1);
 
       cout << "Razão Social: ";
       getline(cin, strAux1);
-      novaPessoaJuridica->setRazaoSocial(strAux1.c_str());
+      novaPessoaJuridica->setRazaoSocial(strAux1);
 
       correntistas.push_back(novaPessoaJuridica);
     }
@@ -160,13 +288,13 @@ void Banco::cadastrarConta() {
       cout << "Nome (-1 para cancelar): ";
       getline(cin, strAux1);
 
-      if(strcmp(strAux1.c_str(), "-1") == 0){
+      if(strAux1 == "-1"){
         operacaoCancelada = true;
         break;
       }
 
       for(Pessoa* p: correntistas){
-        if(strcmp(p->getNome(), strAux1.c_str()) == 0){
+        if(p->getNome() == strAux1){
           achou = true;
           pAux = p;
           break;
@@ -276,7 +404,7 @@ void Banco::cadastrarConta() {
 
 }
 
-void Banco::editarConta(const char* numeroDaConta) {
+void Banco::editarConta(string numeroDaConta) {
   bool encontrou = false;
   Conta* cAtual = nullptr;
   string strAux;
@@ -285,7 +413,7 @@ void Banco::editarConta(const char* numeroDaConta) {
   int novaData, opAux;
 
   for(Conta* c: contas){
-    if(strcmp(c->getNumeroDaConta(), numeroDaConta) == 0){
+    if(c->getNumeroDaConta() == numeroDaConta){
       encontrou = true;
       cAtual = c;
       break;
@@ -302,7 +430,7 @@ void Banco::editarConta(const char* numeroDaConta) {
     cout << "Novo nome: ";
     cin.ignore();
     getline(cin, strAux);
-    cAtual->pessoa->setNome(strAux.c_str());
+    cAtual->pessoa->setNome(strAux);
   }
 
 
@@ -312,7 +440,7 @@ void Banco::editarConta(const char* numeroDaConta) {
     cout << "Novo e-mail: ";
     cin.ignore();
     getline(cin, strAux);
-    cAtual->pessoa->setEmail(strAux.c_str());
+    cAtual->pessoa->setEmail(strAux);
   }
 
 
@@ -323,7 +451,7 @@ void Banco::editarConta(const char* numeroDaConta) {
     if(op == 'S' || op == 's'){
       cout << "Novo CPF: ";
       cin >> strAux;
-      pessoaFisicaAtual->setCPF(strAux.c_str());
+      pessoaFisicaAtual->setCPF(strAux);
     }
 
     cout << "Deseja alterar a data de nascimento? [S/N]" << endl;
@@ -331,7 +459,7 @@ void Banco::editarConta(const char* numeroDaConta) {
     if(op == 'S'){
       cout << "Nova data de nascimento (sem pontuação - ddmmyyyy): ";
       cin >> strAux;
-      pessoaFisicaAtual->setDataDeNascimento(strAux.c_str());
+      pessoaFisicaAtual->setDataDeNascimento(strAux);
     }
 
     cout << "Deseja alterar o estado civil? [S/N]" << endl;
@@ -349,7 +477,7 @@ void Banco::editarConta(const char* numeroDaConta) {
         cout << "Opção Inválida. Tente novamente!" << endl;
         cout << "Op.: ";
       }
-      pessoaFisicaAtual->setEstadoCivil(estadoCivil[opAux-1].c_str());
+      pessoaFisicaAtual->setEstadoCivil(estadoCivil[opAux-1]);
     }
 
   }else if(numeroDaConta[1] == '2'){
@@ -360,7 +488,7 @@ void Banco::editarConta(const char* numeroDaConta) {
     if(op == 'S' || op == 's'){
       cout << "Novo CNPJ: ";
       cin >> strAux;
-      pessoaJuridicaAtual->setCNPJ(strAux.c_str());
+      pessoaJuridicaAtual->setCNPJ(strAux);
     }
 
     cout << "Deseja alterar a inscrição estadual? [S/N]" << endl;
@@ -369,7 +497,7 @@ void Banco::editarConta(const char* numeroDaConta) {
       cout << "Novo inscrição estadual: ";
       cin.ignore();
       getline(cin, strAux);
-      pessoaJuridicaAtual->setInscricaoEstadual(strAux.c_str());
+      pessoaJuridicaAtual->setInscricaoEstadual(strAux);
     }
 
     cout << "Deseja alterar a razão social? [S/N]" << endl;
@@ -378,7 +506,7 @@ void Banco::editarConta(const char* numeroDaConta) {
       cout << "Novo razão social: ";
       cin.ignore();
       getline(cin, strAux);
-      pessoaJuridicaAtual->setRazaoSocial(strAux.c_str());
+      pessoaJuridicaAtual->setRazaoSocial(strAux);
     }
 
   }
@@ -417,10 +545,10 @@ void Banco::listarContas() const {
 }
 
 
-void Banco::listarContasCorrentista(const char* nome) const {
+void Banco::listarContasCorrentista(string nome) const {
   bool encontrou = false;
   for(auto c: contas){
-    if(strcmp(c->pessoa->getNome(), nome) == 0){
+    if(c->pessoa->getNome() == nome){
       c->mostrarConta();
       encontrou = true;
     }
@@ -432,12 +560,21 @@ void Banco::listarContasCorrentista(const char* nome) const {
 }
 
 
-Conta* Banco::existeConta(const char* numeroDaConta) const {
+Conta* Banco::existeConta(string numeroDaConta) const {
   for(Conta* c: contas){
-    if(strcmp(c->getNumeroDaConta(), numeroDaConta) == 0){
+    if(c->getNumeroDaConta() == numeroDaConta){
       return c;
     }
   }
 
   throw ContaInexistente();
+}
+
+Pessoa* Banco::getPonteiroPessoa(string nomeDoCorrentista) {
+  for(Pessoa* p: correntistas){
+    if(p->getNome() == nomeDoCorrentista){
+      return p;
+    }
+  }
+  return nullptr;
 }
