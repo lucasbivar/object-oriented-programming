@@ -10,8 +10,8 @@ using std::ios_base;
 #include <iomanip>
 using std::setw;
 
-ContaPoupanca::ContaPoupanca(Pessoa* p, int diaDeAniversario): 
-Conta(p){
+ContaPoupanca::ContaPoupanca(Pessoa* p, string prefixoConta, string prefixoPessoa, int diaDeAniversario): 
+Conta(p, prefixoConta, prefixoPessoa){
   this->diaDeAniversario = diaDeAniversario > 0 && diaDeAniversario <= 31 ? diaDeAniversario : 10;
 }
  
@@ -50,4 +50,25 @@ void ContaPoupanca::imprimirExtrato() const {
   cout <<"R$ " << saldo << endl;
   cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;
   cout << endl;
+}
+
+void ContaPoupanca::mostrarConta() const {
+  cout << endl;
+  cout << "=-=-=-=-=-=-=-=Dados da Conta-=-=-=-=-=-=-=" << endl;
+  cout << "DADOS:" << endl;
+  cout << "Tipo da Conta         - Poupança" << endl;
+  cout << "Nome do Correntista   - " << pessoa->getNome() << endl;
+  cout << "E-mail do Correntista - " << pessoa->getEmail() << endl;
+  cout << "Numero da Conta       - " << numeroDaConta << endl;
+  cout << "Dia de Aniversário    - " << diaDeAniversario << endl;
+  cout << "-------------------------------------------" << endl;
+  cout << "SALDO ATUAL:" << endl;
+  cout << "R$ " << saldo << endl;
+  cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;
+  cout << endl;
+}
+
+void ContaPoupanca::setDiaDeAniversario(int dia){
+  // validar genericamente e criar exceção
+  this->diaDeAniversario = dia;
 }

@@ -7,9 +7,13 @@
 
 class ContaCorrenteLimite : public Conta {
 public:
-  ContaCorrenteLimite(Pessoa* p, double=200);
+  ContaCorrenteLimite(Pessoa* p, string prefixoConta, string prefixoPessoa, double=200);
 
   virtual void imprimirExtrato() const;
+  virtual void mostrarConta() const;
+
+  void setLimite(double);
+
 protected:
   virtual void validarRetirada(double valor) const;
 private:

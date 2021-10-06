@@ -13,8 +13,8 @@ using std::ios_base;
 #include <iomanip>
 using std::setw;
 
-ContaCorrenteLimite::ContaCorrenteLimite(Pessoa *p, double limite): 
-Conta(p){
+ContaCorrenteLimite::ContaCorrenteLimite(Pessoa *p,string prefixoConta, string prefixoPessoa, double limite): 
+Conta(p, prefixoConta, prefixoPessoa){
   this->limite = limite >= 0 ? limite : 200;
 }
 
@@ -58,7 +58,30 @@ void ContaCorrenteLimite::imprimirExtrato() const {
   }
   cout << "-------------------------------------------" << endl;
   cout << "SALDO ATUAL:" << endl;
-  cout <<"R$ " << saldo << endl;
+  cout << "R$ " << saldo << endl;
   cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;
   cout << endl;
+}
+
+void ContaCorrenteLimite::mostrarConta() const {
+  cout << endl;
+  cout << "=-=-=-=-=-=-=-=Dados da Conta-=-=-=-=-=-=-=" << endl;
+  cout << "DADOS:" << endl;
+  cout << "Tipo da Conta         - Corrente Com Limite" << endl;
+  cout << "Nome do Correntista   - " << pessoa->getNome() << endl;
+  cout << "E-mail do Correntista - " << pessoa->getEmail() << endl;
+  cout << "Numero da Conta       - " << numeroDaConta << endl;
+  cout << "Limite da Conta       - R$ " << limite << endl;
+  cout << "-------------------------------------------" << endl;
+  cout << "SALDO ATUAL:" << endl;
+  cout << "R$ " << saldo << endl;
+  cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;
+  cout << endl;
+}
+
+void ContaCorrenteLimite::setLimite(double valor){
+  if(valor <= 0){
+    throw ValorInvalido();
+  }
+  this->limite = valor;
 }

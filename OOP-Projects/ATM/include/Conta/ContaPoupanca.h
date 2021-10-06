@@ -10,10 +10,12 @@ using std::string;
 
 class ContaPoupanca : public Conta {
 public:
-  ContaPoupanca(Pessoa* p, int=10);
+  ContaPoupanca(Pessoa* p, string prefixoConta, string prefixoPessoa, int=10);
 
   virtual void imprimirExtrato() const;
+  virtual void mostrarConta() const;
   
+  void setDiaDeAniversario(int dia);
 private:
   int diaDeAniversario; 
 };

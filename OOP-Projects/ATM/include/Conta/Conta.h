@@ -4,6 +4,10 @@
 #include <string>
 using std::string;
 
+#include<iostream>
+using std::cout;
+using std::endl;
+
 #include "../Transacao/Transacao.h"
 
 #include "../Pessoa/Pessoa.h"
@@ -24,10 +28,10 @@ using std::to_string;
 class Conta {
 public:
 
-  Conta(Pessoa* p){
+  Conta(Pessoa* p, string prefixoConta, string prefixoPessoa){
     this->pessoa = p;
     this->saldo = 0;
-    strcpy(this->numeroDaConta, this->gerarNumeroConta()); 
+    this->gerarNumeroConta(prefixoConta, prefixoPessoa);
   }
 
   void operator<<(double valor){
@@ -71,9 +75,16 @@ public:
 
   virtual void imprimirExtrato() const = 0;
 
+  virtual void mostrarConta() const = 0;
+
+
+  const char* getNumeroDaConta() const {
+    return numeroDaConta;
+  }
+
 private:
 
-  const char* gerarNumeroConta(){
+  void gerarNumeroConta(string prefixoConta, string prefixoPessoa){
 
     time_t theTime = time(NULL);
     struct tm *aTime = localtime(&theTime);
@@ -92,9 +103,8 @@ private:
     segundo = string(2 - segundo.size(), '0') + segundo;
 
 
-    string novoNumeroConta = ano+dia+mes+segundo+hora+minuto;
-
-    return novoNumeroConta.c_str();
+    string novoNumeroConta = prefixoConta+prefixoPessoa+ano+dia+mes+segundo+hora+minuto;
+    strcpy(this->numeroDaConta, novoNumeroConta.c_str());
   }
 
 protected:
@@ -103,6 +113,8 @@ protected:
   double saldo;
   list<Transacao> listaDeTransacoes;
 
+  friend class Banco;
+  
   virtual void validarRetirada(double valor) const {
     if(valor <= 0){
       throw ValorInvalido();
