@@ -29,7 +29,6 @@ string PessoaFisica::getCPF() const {
 }
 
 void PessoaFisica::setCPF(string CPF) {
-  //TODO: VALIDAR CPF
   this->CPF = CPF;
 }
 
@@ -46,7 +45,6 @@ string PessoaFisica::getEstadoCivil() const {
 }
 
 void PessoaFisica::setEstadoCivil(string estadoCivil) {
-  //TODO: VALIDAR ESTADO CIVIL (3 TIPOS)
   this->estadoCivil = estadoCivil;
 }
 
