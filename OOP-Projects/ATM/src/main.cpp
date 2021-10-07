@@ -25,12 +25,12 @@ using namespace std::literals::chrono_literals;
 
 
 int main(){
-  Banco banco("IFBank", "ifbank@org.com", "1231231232", "dasdas", "sdasdasdasd");
+  Banco banco("IFBank", "ifbank@org.com", "12341234123412", "9999999", "IFBank S.A");
 
   int opVisao, opAtual;
   double valor;
   string strAux;
-  while(true){
+
   cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;
   cout << "         Bem-vindo ao IFBank" << endl;
   cout << "-------------------------------------------" << endl;
@@ -46,8 +46,10 @@ int main(){
     cout << "Opção Inválida. Tente novamente!" << endl;
     cout << "Op.: ";
   }
-  if(opVisao == 3) break;
+
+  if(opVisao == 3) return 0;
   system("clear");
+
   if(opVisao == 1){
     while (true){
       cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;
@@ -76,7 +78,7 @@ int main(){
         cout << "Número da Conta: ";
         cin >> strAux;
         try{
-          banco.consultarConta(strAux.c_str());
+          banco.consultarConta(strAux);
         }catch(runtime_error& e){
           cout << e.what();
           cout << endl << endl;
@@ -85,7 +87,8 @@ int main(){
         cout << "Número da Conta: ";
         cin >> strAux;
         try{
-          banco.editarConta(strAux.c_str());
+          banco.editarConta(strAux);
+          cout << "Conta editada com sucesso!" << endl;
         }catch(runtime_error& e){
           cout << e.what();
           cout << endl << endl;
@@ -94,7 +97,8 @@ int main(){
         cout << "Número da Conta: ";
         cin >> strAux;
         try{
-          banco.removerConta(strAux.c_str());
+          banco.removerConta(strAux);
+          cout << "Conta removida com sucesso!" << endl;
         }catch(runtime_error& e){
           cout << e.what();
           cout << endl << endl;
@@ -106,7 +110,7 @@ int main(){
         cin.ignore();
         getline(cin, strAux);
         try{
-          banco.listarContasCorrentista(strAux.c_str());
+          banco.listarContasCorrentista(strAux);
         }catch(runtime_error& e){
           cout << e.what();
           cout << endl << endl;
@@ -124,11 +128,12 @@ int main(){
     Conta* contaAtual;
     while(true){
       cout << "Digite o número da sua conta (-1 encerra): ";
+      cin.ignore();
       cin >> numeroDaContaAtual;
       if(numeroDaContaAtual == "-1") break;
 
       try{
-        contaAtual = banco.existeConta(numeroDaContaAtual.c_str());
+        contaAtual = banco.existeConta(numeroDaContaAtual);
       }catch(runtime_error& e){
         cout << e.what();
         cout << endl << endl;
@@ -144,7 +149,7 @@ int main(){
         cout << "3 - Transferir" << endl;
         cout << "4 - Saldo" << endl;
         cout << "5 - Extrato" << endl;
-        cout << "6 - Sair do programa" << endl;
+        cout << "6 - Sair da conta" << endl;
         cout << "-------------------------------------------" << endl;
         cout << "Op.: ";
         while(true){
@@ -164,7 +169,7 @@ int main(){
           }catch(runtime_error& e){
             cout << e.what();
             cout << endl << endl;
-            break;
+            continue;
           }
 
         }else if(opAtual == 2){
@@ -176,7 +181,7 @@ int main(){
           }catch(runtime_error& e){
             cout << e.what();
             cout << endl << endl;
-            break;
+            continue;
           }
 
         }else if(opAtual == 3){
@@ -185,11 +190,11 @@ int main(){
           cout << "Digite o número da conta de destino: ";
           cin >> numeroDaContaAtual;
           try{
-            contaDestino = banco.existeConta(numeroDaContaAtual.c_str());
+            contaDestino = banco.existeConta(numeroDaContaAtual);
           }catch(runtime_error& e){
             cout << e.what();
             cout << endl << endl;
-            break;
+            continue;
           }
   
          
@@ -201,7 +206,7 @@ int main(){
           }catch(runtime_error& e){
             cout << e.what();
             cout << endl << endl;
-            break;
+            continue;
           }
  
         }else if(opAtual == 4){
@@ -217,6 +222,5 @@ int main(){
     }
   }
 
-  }
   return 0;
 }
