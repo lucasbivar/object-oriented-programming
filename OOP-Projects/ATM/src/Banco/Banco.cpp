@@ -267,11 +267,11 @@ void Banco::cadastrarConta() {
       correntistas.push_back(novaPessoaFisica);
     }else{
       cout << "CNPJ (sem pontuação): ";
-      cin.ignore();
-      getline(cin, strAux1);
+      cin >> strAux1;
       novaPessoaJuridica->setCNPJ(strAux1);
 
       cout << "Inscrição Estadual: ";
+      cin.ignore();
       getline(cin, strAux1);
       novaPessoaJuridica->setInscricaoEstadual(strAux1);
 
