@@ -46,10 +46,10 @@ Banco::Banco(string nome, string email,
   PessoaJuridica(nome, email, cnpj, inscricaoEstadual, razaoSocial){
 
   fstream dataBase;
-  dataBase.open("database/dataBase.txt", ios::in);
+  dataBase.open("dataBase.txt", ios::in);
   if(!dataBase){
     dataBase.close();
-    dataBase.open("database/dataBase.txt", ios::out);
+    dataBase.open("dataBase.txt", ios::out);
     dataBase.close();
   }else{
     string line;
@@ -117,7 +117,7 @@ Banco::Banco(string nome, string email,
 
 Banco::~Banco(){
   ofstream dataBase;
-  dataBase.open("database/dataBase.txt");
+  dataBase.open("dataBase.txt");
   for(Pessoa* p: correntistas){
     string line;
     PessoaFisica* pessoaF = dynamic_cast<PessoaFisica*>(p);
