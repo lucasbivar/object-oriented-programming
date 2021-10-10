@@ -18,6 +18,7 @@ using std::string;
 
 #include <stdexcept>
 using std::runtime_error;
+using std::invalid_argument;
 
 #include <chrono>
 #include <thread>
@@ -166,7 +167,7 @@ int main(){
           try{
             (*contaAtual) << valor;
             cout << "Deposito realizado com sucesso!!" << endl;
-          }catch(runtime_error& e){
+          }catch(invalid_argument& e){
             cout << e.what();
             cout << endl << endl;
             continue;
@@ -178,7 +179,7 @@ int main(){
           try{
             (*contaAtual) >> valor;
             cout << "Retirada realizada com sucesso!!" << endl;
-          }catch(runtime_error& e){
+          }catch(invalid_argument& e){
             cout << e.what();
             cout << endl << endl;
             continue;
