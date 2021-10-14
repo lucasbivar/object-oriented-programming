@@ -115,7 +115,6 @@ int main(){
         }catch(runtime_error& e){
           cout << e.what();
           cout << endl << endl;
-          break;
         }
       }else if(opAtual == 7){
         std::this_thread::sleep_for(1500ms);
