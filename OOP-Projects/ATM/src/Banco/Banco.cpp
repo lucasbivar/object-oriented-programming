@@ -41,6 +41,9 @@ using std::unordered_map;
 #include <sstream>
 using std::stringstream;
 
+#include <algorithm>
+using std::transform;
+
 Banco::Banco(string nome, string email, 
   string cnpj, string inscricaoEstadual, string razaoSocial):
   PessoaJuridica(nome, email, cnpj, inscricaoEstadual, razaoSocial){
@@ -166,17 +169,42 @@ Banco::~Banco(){
 
 void Banco::removerConta(string numeroDaConta){
   bool encontrou = false;
+  Pessoa *p = nullptr;
+
   for(list<Conta*>::iterator it = contas.begin(); it != contas.end(); it++){
     if((*it)->getNumeroDaConta() == numeroDaConta){
+      p = (*it)->pessoa;
+      delete *it;
       contas.erase(it);
       encontrou = true;
       break;
     }
   }
-  
+
   if(!encontrou){
     throw ContaInexistente();
   }
+
+  bool temOutraConta = false;
+
+  for(list<Conta*>::iterator it = contas.begin(); it != contas.end(); it++){
+    if((*it)->pessoa->getNome() == p->getNome()){
+      temOutraConta = true;
+      break;
+    }
+  }
+
+  if(!temOutraConta){
+    list<Pessoa*>::iterator it;
+    for(list<Pessoa*>::iterator it = correntistas.begin(); it != correntistas.end(); it++){
+      if((*it)->getNome() == p->getNome()){
+        correntistas.erase(it);
+        delete p;
+        break;
+      }
+    }
+  }
+
 }
 
 void Banco::consultarConta(string numeroDaConta) const{
@@ -211,6 +239,10 @@ void Banco::cadastrarConta() {
   cout << "Op.: ";
   while(true){
     cin >> opTemConta;
+    if (cin.fail()){
+      cin.clear();
+      cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
     if(opTemConta >= 1 && opTemConta <= 2) break;
     cout << "Opção Inválida. Tente novamente!" << endl;
     cout << "Op.: ";
@@ -219,9 +251,15 @@ void Banco::cadastrarConta() {
   cout << "Tipo de Pessoa:" << endl;
   cout << "1 - Pessoa Física" << endl;
   cout << "2 - Pessoa Jurídica" << endl;
+  cout << "3 - Cancelar" << endl;
   cout << "Op.: ";
   while(true){
     cin >> opPessoa;
+    if (cin.fail()){
+      cin.clear();
+      cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
+    if(opPessoa == 3)  return;
     if(opPessoa >= 1 && opPessoa <=2) break;
     cout << "Opção Inválida. Tente novamente!" << endl;
     cout << "Op.: ";
@@ -251,13 +289,17 @@ void Banco::cadastrarConta() {
       novaPessoaFisica->setDataDeNascimento(strAux1);
     
       string estadoCivil[5] = {"Solteiro", "Casado", "Separado", "Divorciado", "Viúvo"};
-      cout << "Estado Civil: " << endl;;
+      cout << "Estado Civil: " << endl;
       for(int i = 1; i <= 5; i++){
         cout << i << " - " << estadoCivil[i-1] << endl;
       }
       cout << "Op.: ";
       while(true){
         cin >> opAux;
+        if (cin.fail()){
+          cin.clear();
+          cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
         if(opAux >= 1 && opAux <= 5) break;
         cout << "Opção Inválida. Tente novamente!" << endl;
         cout << "Op.: ";
@@ -284,11 +326,11 @@ void Banco::cadastrarConta() {
   }else{
     bool achou = false;
     while(true){
+      cout << "Nome (-1 para cancelar): " << endl;
       cin.ignore();
-      cout << "Nome (-1 para cancelar): ";
-      getline(cin, strAux1);
+      getline(cin, strAux1);  
 
-      if(strAux1 == "-1"){
+      if(strAux1 == "-1" || strAux1 == "1"){
         operacaoCancelada = true;
         break;
       }
@@ -302,7 +344,6 @@ void Banco::cadastrarConta() {
       }
       if(achou) break;
       cout << "Nome não encontrado na base. Tente novamente!" << endl;
-      cout << "Nome: ";
     }
 
   }
@@ -316,10 +357,15 @@ void Banco::cadastrarConta() {
   cout << "Op.: ";
   while(true){
     cin >> opConta;
+    if (cin.fail()){
+      cin.clear();
+      cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
     if(opConta >= 1 && opConta <= 3) break;
     cout << "Opção Inválida. Tente novamente!" << endl;
     cout << "Op.: ";
   }
+
   if(opConta == 1){
     if(opTemConta == 1){
       novaPessoaFisica = dynamic_cast<PessoaFisica*>(pAux);
@@ -345,6 +391,7 @@ void Banco::cadastrarConta() {
         novaConta->mostrarConta();        
       }
     }
+    
   }else if(opConta == 2){
     cout << "Valor do Limite: " << endl;
     cin >> limite;
@@ -408,7 +455,7 @@ void Banco::editarConta(string numeroDaConta) {
   bool encontrou = false;
   Conta* cAtual = nullptr;
   string strAux;
-  char op;
+  string op;
   double valor;
   int novaData, opAux;
 
@@ -423,22 +470,20 @@ void Banco::editarConta(string numeroDaConta) {
   if(!encontrou) {
     throw ContaInexistente();
   }
-
   cout << "Deseja alterar o nome? [S/N]" << endl;
-  cin >> op;
-  if(op == 'S' || op == 's'){
+  getline(cin, op);
+  if(op[0] == 'S' || op[0] == 's'){
     cout << "Novo nome: ";
-    cin.ignore();
     getline(cin, strAux);
     cAtual->pessoa->setNome(strAux);
   }
 
 
   cout << "Deseja alterar o e-mail? [S/N]" << endl;
-  cin >> op;
-  if(op == 'S' || op == 's'){
+  getline(cin, op);
+
+  if(op[0] == 'S' || op[0] == 's'){
     cout << "Novo e-mail: ";
-    cin.ignore();
     getline(cin, strAux);
     cAtual->pessoa->setEmail(strAux);
   }
@@ -447,24 +492,24 @@ void Banco::editarConta(string numeroDaConta) {
   if(numeroDaConta[1] == '1'){
     PessoaFisica* pessoaFisicaAtual = dynamic_cast<PessoaFisica*>(cAtual->pessoa);
     cout << "Deseja alterar o CPF? [S/N]" << endl;
-    cin >> op;
-    if(op == 'S' || op == 's'){
+    getline(cin, op);
+    if(op[0] == 'S' || op[0] == 's'){
       cout << "Novo CPF: ";
-      cin >> strAux;
+      getline(cin, strAux);
       pessoaFisicaAtual->setCPF(strAux);
     }
 
     cout << "Deseja alterar a data de nascimento? [S/N]" << endl;
-    cin >> op;
-    if(op == 'S'){
+    getline(cin, op);
+    if(op[0] == 'S' || op[0] == 's'){
       cout << "Nova data de nascimento (sem pontuação - ddmmyyyy): ";
-      cin >> strAux;
+      getline(cin, strAux);
       pessoaFisicaAtual->setDataDeNascimento(strAux);
     }
 
     cout << "Deseja alterar o estado civil? [S/N]" << endl;
-    cin >> op;
-    if(op == 'S' || op == 's'){
+    getline(cin, op);
+    if(op[0] == 'S' || op[0] == 's'){
       string estadoCivil[5] = {"Solteiro", "Casado", "Separado", "Divorciado", "Viúvo"};
       cout << "Estado Civil: " << endl;;
       for(int i = 1; i <= 5; i++){
@@ -473,6 +518,10 @@ void Banco::editarConta(string numeroDaConta) {
       cout << "Op.: ";
       while(true){
         cin >> opAux;
+        if (cin.fail()){
+          cin.clear();
+          cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
         if(opAux >= 1 && opAux <= 5) break;
         cout << "Opção Inválida. Tente novamente!" << endl;
         cout << "Op.: ";
@@ -484,27 +533,25 @@ void Banco::editarConta(string numeroDaConta) {
     PessoaJuridica* pessoaJuridicaAtual = dynamic_cast<PessoaJuridica*>(cAtual->pessoa);
 
     cout << "Deseja alterar o CNPJ? [S/N]" << endl;
-    cin >> op;
-    if(op == 'S' || op == 's'){
+    getline(cin, op);
+    if(op[0] == 'S' || op[0] == 's'){
       cout << "Novo CNPJ: ";
-      cin >> strAux;
+      getline(cin, strAux);
       pessoaJuridicaAtual->setCNPJ(strAux);
     }
 
     cout << "Deseja alterar a inscrição estadual? [S/N]" << endl;
-    cin >> op;
-    if(op == 'S' || op == 's'){
+    getline(cin, op);
+    if(op[0] == 'S' || op[0] == 's'){
       cout << "Novo inscrição estadual: ";
-      cin.ignore();
       getline(cin, strAux);
       pessoaJuridicaAtual->setInscricaoEstadual(strAux);
     }
 
     cout << "Deseja alterar a razão social? [S/N]" << endl;
-    cin >> op;
-    if(op == 'S' || op == 's'){
+    getline(cin, op);
+    if(op[0] == 'S' || op[0] == 's'){
       cout << "Novo razão social: ";
-      cin.ignore();
       getline(cin, strAux);
       pessoaJuridicaAtual->setRazaoSocial(strAux);
     }
@@ -514,19 +561,27 @@ void Banco::editarConta(string numeroDaConta) {
   if (numeroDaConta[0] == '2'){
     ContaCorrenteLimite* contaCorrenteAtual = dynamic_cast<ContaCorrenteLimite*>(cAtual);
     cout << "Deseja alterar o limite da conta? [S/N]" << endl;
-    cin >> op;
-    if(op == 'S' || op == 's'){
+    getline(cin, op);
+    if(op[0] == 'S' || op[0] == 's'){
       cout << "Novo limite: ";
       cin >> valor;
+      if (cin.fail()){
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      }
       contaCorrenteAtual->setLimite(valor);
     }
   }else if(numeroDaConta[0] == '3'){
     ContaPoupanca* contaPoupancaAtual = dynamic_cast<ContaPoupanca*>(cAtual);
     cout << "Deseja alterar o dia de aniversário da conta? [S/N]" << endl;
-    cin >> op;
-    if(op == 'S' || op == 's'){
+    getline(cin, op);
+    if(op[0] == 'S' || op[0] == 's'){
       cout << "Novo dia: ";
       cin >> novaData;
+      if (cin.fail()){
+        cin.clear();
+        cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+      };
       contaPoupancaAtual->setDiaDeAniversario(novaData);
     }
   }
@@ -547,8 +602,12 @@ void Banco::listarContas() const {
 
 void Banco::listarContasCorrentista(string nome) const {
   bool encontrou = false;
+  transform(nome.begin(), nome.end(), nome.begin(), ::tolower);
   for(auto c: contas){
-    if(c->pessoa->getNome() == nome){
+    string cmpNome = c->pessoa->getNome();
+    transform(cmpNome.begin(), cmpNome.end(), cmpNome.begin(), ::tolower);
+
+    if(cmpNome == nome){
       c->mostrarConta();
       encontrou = true;
     }
