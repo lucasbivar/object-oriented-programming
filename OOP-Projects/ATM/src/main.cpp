@@ -24,13 +24,13 @@ using std::invalid_argument;
 #include <thread>
 using namespace std::literals::chrono_literals;
 
+void visaoCorrentista(Banco& banco);
+void visaoGerente(Banco& banco);
 
 int main(){
   Banco banco("IFBank", "ifbank@org.com", "12341234123412", "9999999", "IFBank S.A");
 
-  int opVisao, opAtual;
-  double valor;
-  string strAux;
+  int opVisao;
 
   cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;
   cout << "         Bem-vindo ao IFBank" << endl;
@@ -43,6 +43,10 @@ int main(){
   cout << "Op.: ";
   while(true){
     cin >> opVisao;
+    if (cin.fail()){
+      cin.clear();
+      cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    }
     if(opVisao >= 1 && opVisao <= 3) break;
     cout << "Opção Inválida. Tente novamente!" << endl;
     cout << "Op.: ";
@@ -52,7 +56,18 @@ int main(){
   system("clear");
 
   if(opVisao == 1){
-    while (true){
+    visaoGerente(banco);
+  }else{
+    visaoCorrentista(banco);
+  }
+
+  return 0;
+}
+
+void visaoGerente(Banco& banco){
+  int opAtual;
+  string strAux;
+  while (true){
       cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;
       cout << "            Gerente - IFBank" << endl;
       cout << "-------------------------------------------" << endl;
@@ -67,6 +82,10 @@ int main(){
       cout << "Op.: ";
       while(true){
         cin >> opAtual;
+        if (cin.fail()){
+          cin.clear();
+          cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
         if(opAtual == 7) break;
         if(opAtual >= 1 && opAtual <= 6) break;
         cout << "Opção Inválida. Tente novamente!" << endl;
@@ -77,7 +96,8 @@ int main(){
         banco.cadastrarConta();
       }else if(opAtual == 2){
         cout << "Número da Conta: ";
-        cin >> strAux;
+        cin.ignore();
+        getline(cin, strAux);
         try{
           banco.consultarConta(strAux);
         }catch(runtime_error& e){
@@ -86,7 +106,9 @@ int main(){
         }
       }else if(opAtual == 3){
         cout << "Número da Conta: ";
-        cin >> strAux;
+        cin.ignore();
+        getline(cin, strAux);
+        cout << strAux << endl;
         try{
           banco.editarConta(strAux);
           cout << "Conta editada com sucesso!" << endl;
@@ -96,7 +118,8 @@ int main(){
         }
       }else if(opAtual == 4){
         cout << "Número da Conta: ";
-        cin >> strAux;
+        cin.ignore();
+        getline(cin, strAux);
         try{
           banco.removerConta(strAux);
           cout << "Conta removida com sucesso!" << endl;
@@ -122,105 +145,123 @@ int main(){
         break;
       }
     }
+}
 
-  }else{
-    string numeroDaContaAtual;
-    Conta* contaAtual;
-    while(true){
-      cout << "Digite o número da sua conta (-1 encerra): ";
-      cin.ignore();
-      cin >> numeroDaContaAtual;
-      if(numeroDaContaAtual == "-1") break;
 
-      try{
-        contaAtual = banco.existeConta(numeroDaContaAtual);
-      }catch(runtime_error& e){
-        cout << e.what();
-        cout << endl << endl;
-        continue;
-      }
+void visaoCorrentista(Banco& banco){
+  string numeroDaContaAtual;
+  Conta* contaAtual;
+  int opAtual;
+  double valor;
 
-      while (true){
-        cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;
-        cout << "          Correntista - IFBank" << endl;
-        cout << "-------------------------------------------" << endl;
-        cout << "1 - Depositar" << endl;
-        cout << "2 - Retirar" << endl;
-        cout << "3 - Transferir" << endl;
-        cout << "4 - Saldo" << endl;
-        cout << "5 - Extrato" << endl;
-        cout << "6 - Sair da conta" << endl;
-        cout << "-------------------------------------------" << endl;
-        cout << "Op.: ";
-        while(true){
-          cin >> opAtual;
-          if(opAtual >= 1 && opAtual <= 6) break;
-          cout << "Opção Inválida. Tente novamente!" << endl;
-          cout << "Op.: ";
-        }
-        
-        if(opAtual == 1) {
+  while(true){
+    cout << "Digite o número da sua conta (-1 encerra): ";
+    cin.ignore();
+    cin >> numeroDaContaAtual;
+    if(numeroDaContaAtual == "-1") break;
 
-          cout << "Insira o valor do deposito." << endl << "R$ ";
-          cin >> valor;
-          try{
-            (*contaAtual) << valor;
-            cout << "Deposito realizado com sucesso!!" << endl;
-          }catch(invalid_argument& e){
-            cout << e.what();
-            cout << endl << endl;
-            continue;
-          }
-
-        }else if(opAtual == 2){
-          cout << "Insira o valor da retirada." << endl << "R$ ";
-          cin >> valor;
-          try{
-            (*contaAtual) >> valor;
-            cout << "Retirada realizada com sucesso!!" << endl;
-          }catch(invalid_argument& e){
-            cout << e.what();
-            cout << endl << endl;
-            continue;
-          }
-
-        }else if(opAtual == 3){
-          Conta* contaDestino;
-          
-          cout << "Digite o número da conta de destino: ";
-          cin >> numeroDaContaAtual;
-          try{
-            contaDestino = banco.existeConta(numeroDaContaAtual);
-          }catch(runtime_error& e){
-            cout << e.what();
-            cout << endl << endl;
-            continue;
-          }
-  
-         
-          cout << "Digite o valor da transferência." << endl << "R$ ";
-          cin >> valor;
-          try{
-            contaAtual->transferir(valor, contaDestino);
-            cout << "Transferência realizado com sucesso!!" << endl;
-          }catch(runtime_error& e){
-            cout << e.what();
-            cout << endl << endl;
-            continue;
-          }
- 
-        }else if(opAtual == 4){
-          contaAtual->mostrarConta();
-        }else if(opAtual == 5){
-          contaAtual->imprimirExtrato();
-        }else if(opAtual == 6){
-          std::this_thread::sleep_for(1500ms);
-          system("clear");
-          break;
-        }
-      }      
+    try{
+      contaAtual = banco.existeConta(numeroDaContaAtual);
+    }catch(runtime_error& e){
+      cout << e.what();
+      cout << endl << endl;
+      continue;
     }
-  }
 
-  return 0;
+    while (true){
+      cout << "=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=" << endl;
+      cout << "          Correntista - IFBank" << endl;
+      cout << "-------------------------------------------" << endl;
+      cout << "1 - Depositar" << endl;
+      cout << "2 - Retirar" << endl;
+      cout << "3 - Transferir" << endl;
+      cout << "4 - Saldo" << endl;
+      cout << "5 - Extrato" << endl;
+      cout << "6 - Sair da conta" << endl;
+      cout << "-------------------------------------------" << endl;
+      cout << "Op.: ";
+      while(true){
+        cin >> opAtual;
+        if (cin.fail()){
+          cin.clear();
+          cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+        if(opAtual >= 1 && opAtual <= 6) break;
+        cout << "Opção Inválida. Tente novamente!" << endl;
+        cout << "Op.: ";
+      }
+      
+      if(opAtual == 1) {
+
+        cout << "Insira o valor do deposito." << endl << "R$ ";
+        cin >> valor;
+        if (cin.fail()){
+          cin.clear();
+          cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+        try{
+          (*contaAtual) << valor;
+          cout << "Deposito realizado com sucesso!!" << endl;
+        }catch(invalid_argument& e){
+          cout << e.what();
+          cout << endl << endl;
+          continue;
+        }
+
+      }else if(opAtual == 2){
+        cout << "Insira o valor da retirada." << endl << "R$ ";
+        cin >> valor;
+        if (cin.fail()){
+          cin.clear();
+          cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+        try{
+          (*contaAtual) >> valor;
+          cout << "Retirada realizada com sucesso!!" << endl;
+        }catch(invalid_argument& e){
+          cout << e.what();
+          cout << endl << endl;
+          continue;
+        }
+
+      }else if(opAtual == 3){
+        Conta* contaDestino;
+        
+        cout << "Digite o número da conta de destino: ";
+        cin >> numeroDaContaAtual;
+        try{
+          contaDestino = banco.existeConta(numeroDaContaAtual);
+        }catch(runtime_error& e){
+          cout << e.what();
+          cout << endl << endl;
+          continue;
+        }
+
+        
+        cout << "Digite o valor da transferência." << endl << "R$ ";
+        cin >> valor;
+        if (cin.fail()){
+          cin.clear();
+          cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        }
+        try{
+          contaAtual->transferir(valor, contaDestino);
+          cout << "Transferência realizado com sucesso!!" << endl;
+        }catch(runtime_error& e){
+          cout << e.what();
+          cout << endl << endl;
+          continue;
+        }
+
+      }else if(opAtual == 4){
+        contaAtual->mostrarConta();
+      }else if(opAtual == 5){
+        contaAtual->imprimirExtrato();
+      }else if(opAtual == 6){
+        std::this_thread::sleep_for(1500ms);
+        system("clear");
+        break;
+      }
+    }      
+  }
 }
