@@ -22,22 +22,22 @@
 ## O IFBank conta com duas visões:
   1. **Gerente**
        - Abrir conta
-         - DESCREVER
+         - Se o usuário já tiver uma conta no banco não é necessário pedir novamente todos os dados do correntista, apenas o nome, esse será comparado com os nomes que estão presente na base de correntistas, ignorando letras maiúsculas e minúsculas. Uma vez que foi encontrado os dados de um correntista com o mesmo nome, será pedido apenas o tipo de conta que se deseja abrir e suas determinadas informações. Se não for encontrado nenhum correntista com o nome digitado, o gerente tem a opção de tentar novamente ou cancelar a operação com "-1" e retornar para sua tela principal. No caso do usuário não ter conta no banco, será pedido todos os dados do correntista e os dados referentes ao tipo de conta que ele quer criar.
   
        - Consultar conta
-         - Informar número da conta que deve ser consultada. Se o número da conta informada não existir, é lançada uma exceção de conta inexistente, e o gerente tem a opção de selecionar uma nova operação.
+         - Informar o número da conta que deve ser consultada. Se o número da conta informada não existir, é lançada uma exceção de conta inexistente, e o gerente tem a opção de selecionar uma nova operação.
   
        - Fechar conta
-         - Informar número da conta que deve ser fechada. Se o correntista só tiver essa conta, o seu cadastro também é removido da base de dados, juntamente com a conta. (IMPLEMENTAR) Se a conta informada não existir, é lançada uma exceção de conta inexistente, e o gerente tem a opção de selecionar uma nova operação.
+         - Informar o número da conta que deve ser fechada. Se o correntista só tiver essa conta, o seu cadastro também é removido da base de dados dos correntistas, juntamente com a conta. Se a conta informada não existir, é lançada uma exceção de conta inexistente, e o gerente tem a opção de selecionar uma nova operação.
 
       - Atualizar conta
-        - DESCREVER
+        - Informar o número da conta que deve ser atualizada. Se ela existir, será perguntado atributo por atributo se o usuário deseja editar. Se não, será lançada uma exceção de conta inexistente.
 
        - Listar contas
          - Lista todas as contas do banco com o saldo e algumas informações sobre elas e o correntista.
 
        - Listar contas de um correntista
-         - Informar o nome do correntista. Com base no nome será retornado todas suas contas com o saldo e algumas informações sobre a conta e o correntista. Para realização da busca não é necessário se preocupar com letras maiúsculas/minúsculas, as comparações são feitas com tudo em minúsculo. (IMPLEMENTAR ISSO) Se não existir nenhuma conta com o nome informado, é lançada uma exceção de conta inexistente, e o gerente tem a opção de selecionar uma nova operação.
+         - Informar o nome do correntista. Com base no nome será retornado todas suas contas com o saldo e algumas informações sobre a conta e o correntista. Para realização da busca não é necessário se preocupar com letras maiúsculas/minúsculas, as comparações são feitas com tudo em minúsculo. Se não existir nenhuma conta com o nome informado, é lançada uma exceção de conta inexistente, e o gerente tem a opção de selecionar uma nova operação.
 
        - Sair do programa
          - O programa é encerrado.
@@ -64,3 +64,22 @@
   
           - Sair da conta
             - Ao sair da conta é pedido novamente para digitar o número de uma conta ou -1 para terminar o programa.
+
+## Algumas informações sobre os dados no arquivo de texto
+  - Indicação do tipo de dado em cada linha:
+      - PF -> Pessoa Fisica
+      - PJ -> Pessoa Juridica
+      - C -> Conta
+      - T -> Transacao
+
+
+  - Metadados Do Número da Conta:
+    - Ex.: 2120210610091532
+        - 2    -> Prefixo Tipo De Conta  (1 - Conta Corrente; 2 - Conta Corrente Com Limite; 3 - Conta Poupança);
+        - 1    -> Prefixo Tipo de Pessoa (1 - Pessoa Física;  2 - Pessoa Jurídica);
+        - 2021 -> Ano que a conta foi criada
+        - 06   -> Dia que a conta foi criada
+        - 10   -> Mês que a conta foi criada
+        - 09   -> Segundo que a conta foi criada;
+        - 15   -> Hora que a conta foi criada;
+        - 32   -> Minuto que a conta foi criada;
